@@ -57,7 +57,7 @@ function Navbar() {
               </Link>
             </li>
             <li className='nav-item'>
-              <Link to='/bucket' className='nav-links' onClick={closeMobileMenu}>
+              <Link to='/profile' className='nav-links' onClick={closeMobileMenu}>
                 <i class='fa-solid fa-user' />
               </Link>
             </li>

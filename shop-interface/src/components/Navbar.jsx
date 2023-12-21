@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBasketShopping, faXmark, faBars, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { Button } from './Button';
 import './Navbar.css';
@@ -28,7 +30,7 @@ function Navbar() {
             DŻANGO
           </Link>
           <div className='menu-icon' onClick={handleClick}>
-            <i className={click ? 'fas fa-times' : 'fas fa-bars'} />  
+            <FontAwesomeIcon icon={click ? faXmark : faBars} />  
           </div> 
           <ul className={click ? 'nav-menu active' : 'nav-menu'}>
             <li className='nav-item'>
@@ -42,13 +44,13 @@ function Navbar() {
               </Link>
             </li>
             <li className='nav-item'>
-              <Link to='/bucket' className='nav-links' onClick={closeMobileMenu}>
-                <i class='fa-solid fa-bucket' /> {/* Bucket */}
+              <Link to='/basket' className='nav-links' onClick={closeMobileMenu}>
+                <FontAwesomeIcon icon={faBasketShopping} />
               </Link>
             </li>
             <li className='nav-item'>
-              <Link to='/bucket' className='nav-links' onClick={closeMobileMenu}>
-                <i class='fa-solid fa-user' />
+              <Link to='/user-profile' className='nav-links' onClick={closeMobileMenu}>
+                <FontAwesomeIcon icon={faUser} />
               </Link>
             </li>
           </ul>

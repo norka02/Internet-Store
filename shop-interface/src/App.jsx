@@ -9,12 +9,12 @@ function App() {
   return (
     <>
       test
-      {/* <Router>
+      <Router>
         <Navbar />
         <Routes>
           <Route path='/' exact />
         </Routes>
-      </Router> */}
+      </Router>
       
       
      

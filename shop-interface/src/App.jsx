@@ -6,6 +6,7 @@ import './App.css';
 import Navbar from './components/Navbar';
 import Home from './components/sites/Home';
 import Products from './components/sites/Products';
+import About from './components/sites/About';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -15,8 +16,9 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path='/products' Component={Products} />
           <Route path='/' exact Component={Home}/>
+          <Route path='/about' Component={About} />
+          <Route path='/products' Component={Products} />
         </Routes>
       </Router>
     </>

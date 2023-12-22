@@ -56,11 +56,11 @@
 
 .navbar .nav-container .dropdown-menu {
     position: absolute;
-    right: 2rem;
+    right: 3rem;
     top: 80px;
     margin-left: auto;
     margin-top: auto;
-    width: 300px;
+    width: 350px;
     background: rgb(255, 255, 255, 0.4);
     backdrop-filter: blur(25px);
     border-radius: 10px;
@@ -69,8 +69,6 @@
     list-style: none;
     gap: 2rem;
 }
-
-
 
 
 .navbar .nav-container .dropdown-menu .nav-litem .nav-links, 
@@ -129,6 +127,13 @@
     }
     .navbar .nav-container .menu-icon {
         display: block;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar .nav-container .dropdown-menu {
+        left: 2rem;
+        width: unset;
     }
 }
 

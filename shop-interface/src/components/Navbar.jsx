@@ -29,7 +29,7 @@ function Navbar() {
           <Link to="/" className='nav-logo'>
             DŻANGO
           </Link>
-          <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+          <ul className={click ? 'dropdown-menu' : 'nav-menu'}>
             <li className='nav-litem'>
               <Link to='/' className='nav-links' onClick={closeMobileMenu}>
                 Home
@@ -50,17 +50,45 @@ function Navbar() {
                 Contact
               </Link>
             </li>
-            <li className='nav-litem'>
-              <Link to='/basket' className='nav-links-ico' onClick={closeMobileMenu}>
-                <FontAwesomeIcon icon={faBasketShopping} />
-              </Link>
-            </li>
-            <li className='nav-litem'>
-              <Link to='/user-profile' className='nav-links-ico' onClick={closeMobileMenu}>
-                <FontAwesomeIcon icon={faUser} />
-              </Link>
-            </li>
+
+          { click ?
+            <>
+              <li className='nav-litem'>
+                <Link to='/basket' className='nav-links-ico' onClick={closeMobileMenu}>
+                  {click ? 'Basket' : <FontAwesomeIcon icon={faBasketShopping} />}
+                </Link>
+              </li>
+              <li className='nav-litem'>
+                <Link to='/user-profile' className='nav-links-ico' onClick={closeMobileMenu}>
+                  {click ? 'User Profile' : <FontAwesomeIcon icon={faUser} />}
+                </Link>
+              </li>
+            </>
+            : 
+            <>
+            </>
+          }
+            
           </ul>
+          
+          { click ?
+          <>
+          </>
+          :
+            <ul className={click ? 'dropdown-menu' : 'nav-menu'}>
+              <li className='nav-litem'>
+                <Link to='/basket' className='nav-links-ico' onClick={closeMobileMenu}>
+                  {click ? 'Basket' : <FontAwesomeIcon icon={faBasketShopping} />}
+                </Link>
+              </li>
+              <li className='nav-litem'>
+                <Link to='/user-profile' className='nav-links-ico' onClick={closeMobileMenu}>
+                  {click ? 'User Profile' : <FontAwesomeIcon icon={faUser} />}
+                </Link>
+              </li>
+            </ul>
+          }
+   
           <div className='menu-icon' onClick={handleClick}>
               <FontAwesomeIcon className='fa-icon' icon={click ? faXmark : faBars} />  
           </div> 

@@ -25,36 +25,45 @@ function Navbar() {
   return (
     <>
       <nav className='navbar'>
-        <div className='navbar-container'>
-          <Link to="/" className='navbar-logo'>
+        <div className='nav-container'>
+          <Link to="/" className='nav-logo'>
             DŻANGO
           </Link>
-          <div className='menu-icon' onClick={handleClick}>
-            <FontAwesomeIcon icon={click ? faXmark : faBars} />  
-          </div> 
           <ul className={click ? 'nav-menu active' : 'nav-menu'}>
-            <li className='nav-item'>
+            <li className='nav-litem'>
               <Link to='/' className='nav-links' onClick={closeMobileMenu}>
                 Home
               </Link>
             </li>
-            <li className='nav-item'>
+            <li className='nav-litem'>
               <Link to='/products' className='nav-links' onClick={closeMobileMenu}>
                 Products
               </Link>
             </li>
-            <li className='nav-item'>
-              <Link to='/basket' className='nav-links' onClick={closeMobileMenu}>
+            <li className='nav-litem'>
+              <Link to='/products' className='nav-links' onClick={closeMobileMenu}>
+                About
+              </Link>
+            </li>
+            <li className='nav-litem'>
+              <Link to='/products' className='nav-links' onClick={closeMobileMenu}>
+                Contact
+              </Link>
+            </li>
+            <li className='nav-litem'>
+              <Link to='/basket' className='nav-links-ico' onClick={closeMobileMenu}>
                 <FontAwesomeIcon icon={faBasketShopping} />
               </Link>
             </li>
-            <li className='nav-item'>
-              <Link to='/user-profile' className='nav-links' onClick={closeMobileMenu}>
+            <li className='nav-litem'>
+              <Link to='/user-profile' className='nav-links-ico' onClick={closeMobileMenu}>
                 <FontAwesomeIcon icon={faUser} />
               </Link>
             </li>
           </ul>
-          {Button && <Button>SIGN UP</Button>}
+          <div className='menu-icon' onClick={handleClick}>
+              <FontAwesomeIcon className='fa-icon' icon={click ? faXmark : faBars} />  
+          </div> 
         </div>
       </nav>
     </>

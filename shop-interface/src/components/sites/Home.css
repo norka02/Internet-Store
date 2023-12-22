@@ -1,0 +1,11 @@
+h1 {
+    font-size: 100px;
+    z-index: 999;
+}
+
+.container {
+    color: #FFF;
+    margin: auto;
+    padding-top: 100px;
+    text-align: center;
+}

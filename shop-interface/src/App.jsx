@@ -9,6 +9,7 @@ import Products from './components/sites/Products';
 import About from './components/sites/About';
 import Basket from './components/sites/Basket';
 import Contact from './components/sites/Contact';
+import Footer from './components/Footer';
 
 function App() {
   const [count, setCount] = useState(0)

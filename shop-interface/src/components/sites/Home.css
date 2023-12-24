@@ -1,8 +1,12 @@
 
-
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
 .container {
     color: #FFF;
-    margin: auto;
-    padding-top: 100px;
     text-align: center;
+    position: relative;
+    min-height: 70vh;
 }

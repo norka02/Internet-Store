@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import Home from './components/sites/Home';
 import Products from './components/sites/Products';
 import About from './components/sites/About';
+import Basket from './components/sites/Basket';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -19,6 +20,8 @@ function App() {
           <Route path='/' exact Component={Home}/>
           <Route path='/about' Component={About} />
           <Route path='/products' Component={Products} />
+
+          <Route path='/basket' Component={Basket} />
         </Routes>
       </Router>
     </>

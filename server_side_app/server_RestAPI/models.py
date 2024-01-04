@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class NewsletterClient(models.Model):
     newsletter_client_id = models.BigAutoField(primary_key=True)
@@ -28,6 +29,7 @@ class Client(models.Model):
     first_name = models.CharField(max_length=40, null=False, default='')
     last_name = models.CharField(max_length=40, null=False, default='')
     address_id = models.ForeignKey(ClientAddress, on_delete=models.RESTRICT, null=False)
+    client_detail_id = models.ForeignKey(ClientDetail, on_delete=models.RESTRICT,blank=True, null=False)
     account_created_at = models.DateTimeField(auto_now_add=True, null=True)
     has_account = models.BooleanField(default=False, null=False)
 
@@ -67,8 +69,13 @@ class Order(models.Model):
     comments = models.TextField(null=False)
 
 
-class OrderItem(models.Model):
-    order_item_id = models.BigAutoField(primary_key=True)
+"""
+    Łączy konkretne zamówienie (z danymi klienta) i jego sumę do zapłacenia 
+    z konkretnymi id produktów które klient zamówił. 
+    Produkty o tym samym order_id pochodzą z tego samego zamówienia 
+"""
+class OrderDetail(models.Model):
+    order_detail_id = models.BigAutoField(primary_key=True)
     product_id = models.ForeignKey(Product, on_delete=models.RESTRICT)
     order_id = models.ForeignKey(Order, on_delete=models.RESTRICT)
     product_price = models.DecimalField(max_digits=10, decimal_places=2, null=False)

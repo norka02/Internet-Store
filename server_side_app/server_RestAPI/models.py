@@ -1,6 +1,7 @@
 from django.db import models
 
 
+
 # Create your models here.
 class NewsletterClient(models.Model):
     newsletter_client_id = models.BigAutoField(primary_key=True)

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./PurchaseForm.css";
+import Checkout from "./Checkout";
+import { Link } from "react-router-dom";
 
 
 function PurchaseForm() {
@@ -10,6 +12,7 @@ function PurchaseForm() {
     const [houseNumber, setHouseNumber] = useState("");
     const [zipCode, setZipCode] = useState("");
 
+    const [checkout, setCheckOut] = useState(false);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -43,7 +46,17 @@ function PurchaseForm() {
                 <option value="2">Paczkomat</option>
                 <option value="3">Kurier DPD</option>
             </select>
-            <button type="submit">Submit your order</button>
+                {checkout ? (
+                    <Checkout path="/checkout"/>
+                ) : (
+                    <button type="submit"
+                    onClick={() => {
+                        setCheckOut(true);
+                    }}
+                    >
+                    Submit your order
+                    </button>
+                )}
         </form>
         </>
     );

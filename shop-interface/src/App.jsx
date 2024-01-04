@@ -11,6 +11,7 @@ import Basket from './components/sites/Basket';
 import Contact from './components/sites/Contact';
 import Footer from './components/Footer';
 import PurchaseForm from './components/PurchaseForm';
+import Checkout from './components/Checkout';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -26,6 +27,7 @@ function App() {
           <Route path='/contact' Component={Contact} />
           <Route path='/basket' Component={Basket} />
           <Route path='/purchase-form' Component={PurchaseForm}/>
+          <Route path='/checkout' Component={Checkout} />
         </Routes>
       </Router>
     </>

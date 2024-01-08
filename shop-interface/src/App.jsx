@@ -13,25 +13,31 @@ import Footer from "./components/Footer";
 import PurchaseForm from "./components/PurchaseForm";
 import Checkout from "./components/Checkout";
 import ProductDetail from "./components/sites/ProductDetail";
+import { ShopContextProvider } from "./components/sites/context/shop-context";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" exact Component={Home} />
-          <Route path="/about" Component={About} />
-          <Route path="/products" Component={Products} />
-          <Route path="/products/:productId" Component={ProductDetail}></Route>
-          <Route path="/contact" Component={Contact} />
-          <Route path="/basket" Component={Basket} />
-          <Route path="/purchase-form" Component={PurchaseForm} />
-          <Route path="/checkout" Component={Checkout} />
-        </Routes>
-      </Router>
+      <ShopContextProvider>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" exact Component={Home} />
+            <Route path="/about" Component={About} />
+            <Route path="/products" Component={Products} />
+            <Route
+              path="/products/:productId"
+              Component={ProductDetail}
+            ></Route>
+            <Route path="/contact" Component={Contact} />
+            <Route path="/basket" Component={Basket} />
+            <Route path="/purchase-form" Component={PurchaseForm} />
+            <Route path="/checkout" Component={Checkout} />
+          </Routes>
+        </Router>
+      </ShopContextProvider>
     </>
   );
 }

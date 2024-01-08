@@ -1,13 +1,15 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./ProductDetail.css";
 import Footer from "../Footer";
-import { Button } from "../Button";
+import { ShopContext } from "./context/shop-context";
+import axios from "axios";
 
 function ProductDetail() {
   let { productId } = useParams();
   const [productDetails, setProductDetails] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const { addToCart, cartItems } = useContext(ShopContext);
 
   useEffect(() => {
     const fetchProductDetail = async () => {
@@ -20,13 +22,13 @@ function ProductDetail() {
         console.log(error);
       }
     };
-    console.log(productDetails);
 
     fetchProductDetail();
   }, [productId]);
 
+  // Wyświetlenie informacji o ładowaniu, gdy dane nie są jeszcze dostępne
   if (!productDetails) {
-    return <div>Loading...</div>; // Wyświetlenie informacji o ładowaniu, gdy dane nie są jeszcze dostępne
+    return <div>Loading...</div>;
   }
 
   // Przekształcenie obiektu size_id w elementy do wyświetlenia
@@ -34,7 +36,9 @@ function ProductDetail() {
     ? Object.entries(productDetails.size_id).map(([size, value]) => {
         if (value > 0 && size !== "size_id") {
           return (
-            <span key={size}>{size.toUpperCase().replace("SIZE_", "")} </span>
+            <button key={size} onClick={() => setSelectedSize(size)}>
+              {size.toUpperCase().replace("SIZE_", "")}
+            </button>
           );
         }
         return null;
@@ -55,9 +59,20 @@ function ProductDetail() {
             Dostępne rozmiary:
             {sizes}
           </div>
-        </div>
-        <div className="product-wrapper">
-          <Button>Add to basket</Button>
+          {selectedSize && (
+            <button
+              className="add-to-cart-button"
+              onClick={() => addToCart(productDetails.product_id, selectedSize)}
+            >
+              Add to Cart
+            </button>
+          )}
+          {cartItems.map((item, index) => (
+            <div key={index}>
+              Product ID: {item.productId}, Size ID: {item.sizeId}, Quantity:{" "}
+              {item.quantity}
+            </div>
+          ))}
         </div>
       </div>
 

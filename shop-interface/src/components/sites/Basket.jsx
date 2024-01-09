@@ -26,7 +26,7 @@ function Basket() {
               if (!product) return null;
 
               return (
-                <li className="basket-item">
+                <li key={index} className="basket-item">
                   <a href="">
                     <div className="item-image-wrapper">
                       <img

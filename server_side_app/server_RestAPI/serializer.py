@@ -89,26 +89,6 @@ class OrderSerializer(serializers.ModelSerializer):
             'order_details',
         ]
 
-    def create(self, validated_data):
-        client_data = validated_data.pop('client_id')
-        order_details_data = validated_data.pop('order_details')
-
-        # Tworzenie lub aktualizacja klienta
-        client_address_data = client_data.pop('address_id')
-        client_detail_data = client_data.pop('client_detail_id')
-        client_address = ClientAddress.objects.create(**client_address_data)
-        client_detail = ClientDetail.objects.create(**client_detail_data)
-        client = Client.objects.create(address_id=client_address, client_detail_id=client_detail, **client_data)
-
-        # Tworzenie zamówienia
-        order = Order.objects.create(client_id=client, **validated_data)
-
-        # Tworzenie szczegółów zamówienia
-        for detail_data in order_details_data:
-            OrderDetail.objects.create(order_id=order, **detail_data)
-
-        return order
-
 
 class OrderDetailSerializer(serializers.ModelSerializer):
     product_id = ProductSerializer(read_only=True)

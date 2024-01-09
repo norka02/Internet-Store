@@ -5,6 +5,7 @@ from .serializer import *
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+import json
 
 
 
@@ -35,6 +36,30 @@ class BasketView(APIView):
             return Response({"error": "Order detail does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
 
+
+class OrderCreateView(APIView):
+    def post(self, request, *args, **kwargs):
+        request_data = request.data
+        client_data = {
+            'first_name': request_data['firstName'],
+            'last_name': request_data['lastName'],
+        }
+        address_data = {
+            'city': request_data['city'],
+            'voivodeship': 'Mal',
+            'zip_code': request_data['zipCode'],
+            'house_number': request_data['houseNumber'],
+            'apartment_number': request_data['houseNumber'],
+            'street': request_data['street']
+        }
+        
+        print("Otrzymane dane zamówienia:")
+        print(request_data)
+
+
+        return Response({"message": "Dane otrzymane"}, status=status.HTTP_200_OK)
+    
+    
 # class OrderView(APIView):
 #     def post(self, request, *args, **kwargs):
 #         # Przetwarzanie danych klienta

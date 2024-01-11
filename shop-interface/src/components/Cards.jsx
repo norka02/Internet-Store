@@ -30,12 +30,12 @@ function Cards() {
             <ul className="cards-items">
               {products.map((product) => (
                 <ProductCard
-                  path={`/products/${product.product_id}`}
-                  key={product.product_id}
+                  path={`/products/${product.id}`}
+                  key={product.id}
                   src=""
-                  text={product.product_name}
-                  label={product.color}
-                  price={product.netto_price}
+                  text={product.name}
+                  label={product.category.name}
+                  price={product.price}
                 />
               ))}
             </ul>

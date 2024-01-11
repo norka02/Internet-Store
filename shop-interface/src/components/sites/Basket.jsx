@@ -6,65 +6,66 @@ import { ShopContext } from "./context/shop-context";
 import { Link } from "react-router-dom";
 
 function Basket() {
-  const { cartItems, products, updateCartItemCount, getTotalCartAmount } =
-    useContext(ShopContext);
+  const {
+    cartItems,
+    products,
+    updateCartItemCount,
+    getTotalCartAmount,
+    removeFromCart,
+  } = useContext(ShopContext);
 
-  const handleQuantityChange = (productId, sizeId, newQuantity) => {
-    updateCartItemCount(productId, sizeId, parseInt(newQuantity));
+  const handleQuantityChange = (productId, sizeId, color, newQuantity) => {
+    updateCartItemCount(productId, sizeId, color, parseInt(newQuantity));
   };
   const deliveryCost = 13.99;
+
   return (
     <>
       <section className="basket-section">
         <h1 className="basket-header">View basket</h1>
         <div className="basket-items-wrapper">
           <ul className="basket-items-list">
-            {cartItems.map((cartItems, index) => {
-              const product = products.find(
-                (p) => p.product_id === cartItems.productId
-              );
+            {cartItems.map((item, index) => {
+              const product = products.find((p) => p.id === item.productId);
               if (!product) return null;
 
               return (
                 <li key={index} className="basket-item">
-                  <a href="">
+                  <a href="#">
                     <div className="item-image-wrapper">
                       <img
-                        src="/hoodie1.jpg"
-                        alt="Clothes img"
+                        src={product.image_url || "/default-image.jpg"} // Assuming 'image_url' is the key for the image in 'product'
+                        alt={product.name}
                         className="item-image"
                       />
                     </div>
                   </a>
                   <div className="basket-item-details">
-                    <h2 className="item-header">{product.product_name}</h2>
-                    <span className="item-price">
-                      {product.brutto_price} PLN
-                    </span>
+                    <h2 className="item-header">{product.name}</h2>
+                    <span className="item-price">{product.price} PLN</span>
                     <ul className="item-detail-list">
                       <li className="item-detail-el">
                         <span className="item-detail-name">Prod. number:</span>
-                        <span className="item-detail-value">
-                          {product.product_id}
-                        </span>
+                        <span className="item-detail-value">{product.id}</span>
                       </li>
                       <li className="item-detail-el">
                         <span className="item-detail-name">Size:</span>
                         <span className="item-detail-value">
-                          {cartItems.sizeId}
-                        </span>
+                          {item.size}
+                        </span>{" "}
+                        {/* Changed from sizeId to size */}
                       </li>
                       <li className="item-detail-el">
                         <span className="item-detail-name">Color:</span>
                         <span className="item-detail-value">
-                          {product.color}
-                        </span>
+                          {item.color}
+                        </span>{" "}
+                        {/* Assuming color is directly in item */}
                       </li>
                       <li className="item-detail-el">
                         <span className="item-detail-name">Sum:</span>
                         <span className="item-detail-value">
-                          {cartItems.quantity * product.brutto_price}
-                          PLN
+                          {item.quantity * product.price} PLN
                         </span>
                       </li>
                     </ul>
@@ -72,11 +73,12 @@ function Basket() {
                       <div className="select-container">
                         <select
                           name="select-amount"
-                          value={cartItems.quantity}
+                          value={item.quantity}
                           onChange={(e) =>
                             handleQuantityChange(
-                              cartItems.productId,
-                              cartItems.sizeId,
+                              item.productId,
+                              item.size, // Assuming size is directly in item
+                              item.color, // Assuming color is directly in item
                               e.target.value
                             )
                           }
@@ -88,6 +90,20 @@ function Basket() {
                             </option>
                           ))}
                         </select>
+                        <div className="basket-item-actions">
+                          <button
+                            onClick={() =>
+                              removeFromCart(
+                                item.productId,
+                                item.size,
+                                item.color
+                              )
+                            }
+                            className="remove-from-cart-button"
+                          >
+                            Remove
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>

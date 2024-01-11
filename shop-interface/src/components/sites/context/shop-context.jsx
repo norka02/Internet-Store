@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import axios from "axios"; // Import axios for making HTTP requests
+import axios from "axios";
 
 export const ShopContext = createContext(null);
 
@@ -20,36 +20,51 @@ export const ShopContextProvider = (props) => {
       .catch((error) => console.error("Error fetching products", error));
   }, []);
 
-  const addToCart = (productId, sizeId) => {
+  const addToCart = (productId, size, color) => {
     const existingItem = cartItems.find(
-      (item) => item.productId === productId && item.sizeId === sizeId
+      (item) =>
+        item.productId === productId &&
+        item.size === size &&
+        item.color === color
     );
 
     if (existingItem) {
       setCartItems((prev) =>
         prev.map((item) =>
-          item.productId === productId && item.sizeId === sizeId
+          item.productId === productId &&
+          item.size === size &&
+          item.color === color
             ? { ...item, quantity: item.quantity + 1 }
             : item
         )
       );
     } else {
-      setCartItems((prev) => [...prev, { productId, sizeId, quantity: 1 }]);
+      setCartItems((prev) => [
+        ...prev,
+        { productId, size, color, quantity: 1 },
+      ]);
     }
   };
 
-  const removeFromCart = (productId, sizeId) => {
+  const removeFromCart = (productId, size, color) => {
     setCartItems((prev) =>
       prev.filter(
-        (item) => !(item.productId === productId && item.sizeId === sizeId)
+        (item) =>
+          !(
+            item.productId === productId &&
+            item.size === size &&
+            item.color === color
+          )
       )
     );
   };
 
-  const updateCartItemCount = (productId, sizeId, newQuantity) => {
+  const updateCartItemCount = (productId, size, color, newQuantity) => {
     setCartItems((prev) =>
       prev.map((item) =>
-        item.productId === productId && item.sizeId === sizeId
+        item.productId === productId &&
+        item.size === size &&
+        item.color === color
           ? { ...item, quantity: newQuantity }
           : item
       )
@@ -59,9 +74,9 @@ export const ShopContextProvider = (props) => {
   const getTotalCartAmount = () => {
     let totalAmount = 0;
     for (const item of cartItems) {
-      const product = products.find((p) => p.product_id === item.productId);
+      const product = products.find((p) => p.id === item.productId);
       if (product) {
-        totalAmount += item.quantity * parseFloat(product.brutto_price);
+        totalAmount += item.quantity * parseFloat(product.price);
       }
     }
     return totalAmount;
@@ -80,7 +95,7 @@ export const ShopContextProvider = (props) => {
     getTotalCartAmount,
     checkout,
   };
-  console.log(cartItems);
+
   return (
     <ShopContext.Provider value={contextValue}>
       {props.children}

@@ -1,106 +1,67 @@
 from rest_framework import serializers
-from .models import *
+from .models import Category, Product, ProductVariant, Customer, Order, OrderDetail
 
-
-
-class SizeSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Size
-        fields = [
-            'size_id',
-            'size_s',
-            'size_m',
-            'size_l',
-            'size_xl',
-        ]
-
+        model = Category
+        fields = ['id', 'name']
 
 class ProductSerializer(serializers.ModelSerializer):
-    size_id = SizeSerializer(read_only=True)
-    
+    category = CategorySerializer()
+
     class Meta:
         model = Product
-        fields = [
-            'product_id', 
-            'product_name', 
-            'netto_price', 
-            'brutto_price', 
-            'description', 
-            'color',
-            'size_id'
-        ]
+        fields = ['id', 'name', 'category', 'price']
 
+class ProductVariantSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
 
-class ClientDetailSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ClientDetail
-        fields = [
-            'client_detail_id',
-            'email',
-            'password_hash',
-            'phone_number',
-        ]
+        model = ProductVariant
+        fields = ['id', 'product', 'size', 'color', 'stock_quantity']
 
-
-class ClientAddressSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ClientAddress
-        fields = [
-            'address_id',
-            'city',
-            'voivodeship',
-            'zip_code',
-            'house_number',
-            'apartment_number',
-            'street',
-        ]
-
-
-class ClientSerializer(serializers.ModelSerializer):
-    address_id = ClientAddressSerializer(read_only=True)
-    client_detail_id = ClientDetailSerializer(read_only=True)
+class CustomerSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model = Client
-        fields = [
-            'client_id',
-            'first_name',
-            'last_name',
-            'address_id',
-            'client_detail_id',
-            'account_created_at',
-            'has_account',
-        ]
-        
-        
-
-class OrderSerializer(serializers.ModelSerializer):
-    client_id = ClientSerializer()
-    # order_details = OrderDetailSerializer(many=True)
-
-    class Meta:
-        model = Order
-        fields = [
-            'order_id',
-            'client_id',
-            'price',
-            'order_datetime',
-            'comments',
-            'order_details',
-        ]
+        model = Customer
+        fields = ['first_name', 'last_name', 'email', 'phone', 'street', 'house_number', 'apartment_number', 'city', 'postal_code', 'province']
 
 
 class OrderDetailSerializer(serializers.ModelSerializer):
-    product_id = ProductSerializer(read_only=True)
-    order_id = OrderSerializer(many=True)
-    
+    product_variant = ProductVariantSerializer()
+
     class Meta:
         model = OrderDetail
-        fields = [
-            'order_detail_id',
-            'product_id',
-            'order_id',
-            'product_price',
-            'quantity',
-        ]
+        fields = ['product_variant', 'color', 'quantity']
+
+
+class OrderSerializer(serializers.Serializer):
+    customer = CustomerSerializer()
+    items = OrderDetailSerializer(many=True)
+    total_amount = serializers.DecimalField(max_digits=10, decimal_places=2)
+    
+    def create(self, validated_data):
+        customer_data = validated_data.pop('customer')
+        item_data = validated_data.pop('items')
+        total_amount = validated_data.pop('total_amount')
+        customer, created = Customer.objects.get_or_create(
+            email=customer_data['email'],
+            defaults={key: customer_data[key] for key in customer_data}
+        )
+
+        order = Order.objects.create(customer=customer, total_amount=validated_data['total_amount'])
+
+        items_data = validated_data.pop('items')
+        for item_data in items_data:
+            OrderDetail.objects.create(order=order, **item_data)
+
+        return order
+
+
+
+
+
+
+
+
 

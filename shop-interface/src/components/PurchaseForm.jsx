@@ -1,117 +1,153 @@
-import React, { useContext, useState } from "react";
-import "./PurchaseForm.css";
-import Checkout from "./Checkout";
-import { Link } from "react-router-dom";
-import { ShopContext } from "./sites/context/shop-context";
+import React, { useState, useContext } from "react";
 import axios from "axios";
+import { ShopContext } from "./sites/context/shop-context";
 
-function PurchaseForm() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [city, setCity] = useState("");
-  const [street, setStreet] = useState("");
-  const [houseNumber, setHouseNumber] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [checkout, setCheckOut] = useState(false);
-  const { cartItems } = useContext(ShopContext);
+const PurchaseForm = () => {
+  const [customerData, setCustomerData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    street: "",
+    houseNumber: "",
+    apartmentNumber: "",
+    city: "",
+    postalCode: "",
+    province: "",
+  });
+  const { cartItems, getTotalCartAmount } = useContext(ShopContext);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleChange = (e) => {
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
     const orderData = {
-      firstName,
-      lastName,
-      city,
-      street,
-      houseNumber,
-      zipCode,
-      cartItems,
+      customer: customerData,
+      items: cartItems,
+      totalAmount: getTotalCartAmount(),
     };
     console.log(orderData);
-
-    try {
-      const resp = await axios.post(
-        "http://localhost:8000/api/orders/",
-        orderData
-      );
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
+    axios
+      .post("http://localhost:8000/api/orders/", orderData)
+      .then((response) => {
+        console.log(response.data);
+        // Obsługa po pomyślnym wysłaniu danych (np. wyświetlenie komunikatu, wyczyszczenie koszyka)
+      })
+      .catch((error) => {
+        console.error("Error sending order", error);
+        // Obsługa błędów
+      });
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit} className="container">
-        <label htmlFor="first-name">First name:</label>
-        <input
-          type="text"
-          value={firstName}
-          name="first-name"
-          placeholder="Enter first name"
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <label htmlFor="last-name">Last name:</label>
-        <input
-          type="text"
-          value={lastName}
-          name="last-name"
-          placeholder="Enter last name"
-          onChange={(e) => setLastName(e.target.value)}
-        />
-        <label htmlFor="city">City:</label>
-        <input
-          type="text"
-          value={city}
-          name="city"
-          placeholder="Enter city"
-          onChange={(e) => setCity(e.target.value)}
-        />
-        <label htmlFor="street">Street:</label>
-        <input
-          type="text"
-          value={street}
-          name="street"
-          placeholder="Enter street"
-          onChange={(e) => setStreet(e.target.value)}
-        />
-        <label htmlFor="house-number">House number:</label>
-        <input
-          type="text"
-          value={houseNumber}
-          name="house-number"
-          placeholder="Enter house number"
-          onChange={(e) => setHouseNumber(e.target.value)}
-        />
-        <label htmlFor="zip-code">Zip code:</label>
-        <input
-          type="text"
-          value={zipCode}
-          name="zip-code"
-          placeholder="Enter zip code"
-          onChange={(e) => setZipCode(e.target.value)}
-        />
-        <label htmlFor="delivery-type">Delivery type:</label>
-        <select name="delivery-type" id="">
-          <option value="1">Kurier Inpost</option>
-          <option value="2">Paczkomat</option>
-          <option value="3">Kurier DPD</option>
-        </select>
-        {checkout ? (
-          <Checkout path="/checkout" />
-        ) : (
-          <button
-            onClick={(e) => {
-              setCheckOut(true);
-            }}
-          >
-            Checkout
-          </button>
-        )}
-        {checkout && <button type="submit">Submit</button>}
-      </form>
-    </>
+    <form onSubmit={handleSubmit}>
+      <h2>Formularz zakupu</h2>
+      <div>
+        <label>
+          Imię:
+          <input
+            type="text"
+            name="firstName"
+            value={customerData.firstName}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Nazwisko:
+          <input
+            type="text"
+            name="lastName"
+            value={customerData.lastName}
+            onChange={handleChange}
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          Numer telefonu:
+          <input
+            type="tel"
+            name="phone"
+            value={customerData.phone}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Email:
+          <input
+            type="email"
+            name="email"
+            value={customerData.email}
+            onChange={handleChange}
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          Województwo:
+          <input
+            type="text"
+            name="province"
+            value={customerData.province}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Miasto:
+          <input
+            type="text"
+            name="city"
+            value={customerData.city}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Kod pocztowy:
+          <input
+            type="text"
+            name="postalCode"
+            value={customerData.postalCode}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Ulica:
+          <input
+            type="text"
+            name="street"
+            value={customerData.street}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Numer domu:
+          <input
+            type="text"
+            name="houseNumber"
+            value={customerData.houseNumber}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Numer mieszkania:
+          <input
+            type="text"
+            name="apartmentNumber"
+            value={customerData.apartmentNumber}
+            onChange={handleChange}
+          />
+        </label>
+      </div>
+      {/* ... (pozostałe pola adresu) */}
+      <div>
+        <p>Całkowita cena zamówienia: {getTotalCartAmount()} PLN</p>
+      </div>
+      <button type="submit">Złóż zamówienie</button>
+    </form>
   );
-}
+};
 
 export default PurchaseForm;

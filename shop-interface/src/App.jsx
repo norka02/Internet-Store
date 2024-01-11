@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+import "./App.css";
+
+import Navbar from "./components/Navbar";
+import Home from "./components/sites/Home";
+import Products from "./components/sites/Products";
+import About from "./components/sites/About";
+import Basket from "./components/sites/Basket";
+import Contact from "./components/sites/Contact";
+import Footer from "./components/Footer";
+import PurchaseForm from "./components/PurchaseForm";
+import Checkout from "./components/Checkout";
+import ProductDetail from "./components/sites/ProductDetail";
+import { ShopContextProvider } from "./components/sites/context/shop-context";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <ShopContextProvider>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" exact Component={Home} />
+            <Route path="/about" Component={About} />
+            <Route path="/products" Component={Products} />
+            <Route
+              path="/products/:productId"
+              Component={ProductDetail}
+            ></Route>
+            <Route path="/contact" Component={Contact} />
+            <Route path="/basket" Component={Basket} />
+            <Route path="/purchase-form" Component={PurchaseForm} />
+            <Route path="/checkout" Component={Checkout} />
+          </Routes>
+        </Router>
+      </ShopContextProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

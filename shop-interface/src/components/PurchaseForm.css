@@ -1,0 +1,24 @@
+
+.container {
+    padding: 3rem;
+    justify-content: center;
+    color: #FFF;
+    font-size: 1.5rem;
+    width: 100%;
+}
+
+label {
+    display: flex;
+    padding-right: 1rem;
+}
+input {
+    display: flex;
+}
+
+select {
+    display: flex;
+}
+
+button {
+    display: flex;
+}

@@ -1,0 +1,12 @@
+
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+.container {
+    color: #FFF;
+    text-align: center;
+    position: relative;
+    min-height: 70vh;
+}

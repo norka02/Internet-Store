@@ -5,6 +5,7 @@ from .serializer import *
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from django.db import transaction
 
 
 
@@ -18,68 +19,63 @@ class AllProductsView(APIView):
 class ProductView(APIView):
     def get(self, request, product_id):
         try:
-            product = Product.objects.get(pk=product_id)
-            serializer = ProductSerializer(product)
+            product_variants = ProductVariant.objects.filter(product__id=product_id)
+            if not product_variants:
+                return Response({"error": "No variants found for the given product"}, status=status.HTTP_404_NOT_FOUND)
+           
+            serializer = ProductVariantSerializer(product_variants, many=True)
             return Response(serializer.data)
         except Product.DoesNotExist:
             return Response({"error": "Product does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
 
-class BasketView(APIView):
-    def get(self, request, order_id):
-        try:
-            order_details = OrderDetail.objects.filter(order_id=order_id)
-            serializer = OrderDetailSerializer(order_details, many=True)
-            return Response(serializer.data)
-        except OrderDetail.DoesNotExist:
-            return Response({"error": "Order detail does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
+class CreateOrderView(APIView):
+    def post(self, request):
+        with transaction.atomic():
+            request_data = request.data
+            customer_data = request_data['customer']
+            items_data = request_data['items']
+            total_amount = request_data['totalAmount']
+            
+            customer, created = Customer.objects.get_or_create(
+                email=customer_data['email'],
+                defaults={
+                    'first_name': customer_data['firstName'],
+                    'last_name': customer_data['lastName'],
+                    'email': customer_data['email'],
+                    'phone': customer_data['phone'],
+                    'street': customer_data['street'],
+                    'house_number': customer_data['houseNumber'],
+                    'apartment_number': customer_data['apartmentNumber'],
+                    'city': customer_data['city'],
+                    'postal_code': customer_data['postalCode'],
+                    'province': customer_data['province'],
+                }) 
+            
+            order = Order(
+                customer=customer,
+                details="",
+                total_amount=total_amount
+            )
+            order.save()
+            
+            for item_data in items_data:
+                product_variant = ProductVariant.objects.get(
+                    product_id=item_data['productId'],
+                    size=item_data['size'],
+                    color=item_data['color']
+                )
+                order_detail = OrderDetail(
+                    order=order,
+                    product_variant=product_variant,
+                    quantity=item_data['quantity'],
+                    unit_price=product_variant.product.price
+                )
+                order_detail.save()
+                
+    
 
-# class OrderView(APIView):
-#     def post(self, request, *args, **kwargs):
-#         # Przetwarzanie danych klienta
-#         client_data = {
-#             'first_name': request.data['firstName'],
-#             'last_name': request.data['lastName'],
-#             'address_id': {
-#                 'city': request.data['city'],
-#                 'house_number': request.data['houseNumber'],
-#                 'street': request.data['street'],
-#                 'zip_code': request.data['zipCode']
-#             }
-#         }
-#         address_serializer = ClientAddressSerializer(data=client_data['address_id'])
-#         if address_serializer.is_valid():
-#             address = address_serializer.save()
-#         else:
-#             return Response(address_serializer.errors)
+            return Response({"order_id": order.id}, status=status.HTTP_201_CREATED)
 
-#         client_serializer = ClientSerializer(data=client_data)
-#         if client_serializer.is_valid():
-#             client = client_serializer.save()
-#         else:
-#             return Response(client_serializer.errors)
-
-#         # Przetwarzanie danych zamówienia
-#         order_data = {
-#             'client_id': client,
-#             'order_details': []
-#         }
-#         for item in request.data['cartItems']:
-#             product = Product.objects.get(id=item['productId'])
-#             size = getattr(Size.objects.get(id=product.size_id.id), item['sizeId'])
-#             order_detail = {
-#                 'product_id': product,
-#                 'quantity': item['quantity'],
-#                 'product_price': product.brutto_price  # Zakładając, że cena brutto jest ceną za sztukę
-#             }
-#             order_data['order_details'].append(order_detail)
-
-#         order_serializer = OrderSerializer(data=order_data)
-#         if order_serializer.is_valid():
-#             order_serializer.save()
-#             return Response({"message": "Order created successfully"}, status=status.HTTP_200_OK)
-#         else:
-#             return Response(order_serializer.errors)
-
-#         return Response({"message": "Invalid data"}, status=400)
+            return Response(order_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -98,17 +98,17 @@ function PurchaseForm() {
           <option value="3">Kurier DPD</option>
         </select>
         {checkout ? (
-          <Checkout path="/checkout" />
+          <Link to='/checkout'>Checkout</Link>
         ) : (
-          <button
+          <button type="submit"
             onClick={(e) => {
               setCheckOut(true);
             }}
           >
-            Checkout
+            Submit
           </button>
         )}
-        {checkout && <button type="submit">Submit</button>}
+        {/* {checkout && <button type="submit">Submit</button>} */}
       </form>
     </>
   );

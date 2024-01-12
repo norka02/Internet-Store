@@ -1,17 +1,27 @@
 from rest_framework import serializers
-from .models import Category, Product, ProductVariant, Customer, Order, OrderDetail
+from .models import Category, Product, ProductVariant, Customer, Order, OrderDetail, ProductImage
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name']
+        
+
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ['image']
+
 
 class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
+    images = ProductImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'category', 'price']
+        fields = ['id', 'name', 'category', 'price', 'images']
+        
+
 
 class ProductVariantSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
@@ -56,12 +66,4 @@ class OrderSerializer(serializers.Serializer):
             OrderDetail.objects.create(order=order, **item_data)
 
         return order
-
-
-
-
-
-
-
-
 

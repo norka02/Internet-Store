@@ -13,6 +13,15 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='product_images/')
+    
+    def __str__(self) -> str:
+        return f"Image for product id: {self.product.name}"
+
 
 class ProductVariant(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -44,6 +53,7 @@ class Order(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
     details = models.CharField(max_length=100)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    completed = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Order {self.id} - {self.customer}"

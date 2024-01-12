@@ -5,11 +5,13 @@ import axios from "axios";
 
 function Cards() {
   const [products, setProducts] = useState([]);
+  const baseUrl = "http://localhost:8000";
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/products/");
+        const response = await axios.get(`${baseUrl}/api/products/`);
+        console.log(response.data);
         setProducts(response.data);
       } catch (error) {
         console.log(error);
@@ -18,8 +20,6 @@ function Cards() {
 
     fetchProducts();
   }, []);
-
-  console.log(products.map((product) => product.product));
 
   return (
     <>
@@ -32,7 +32,11 @@ function Cards() {
                 <ProductCard
                   path={`/products/${product.id}`}
                   key={product.id}
-                  src=""
+                  src={
+                    product.images.length > 0
+                      ? baseUrl + product.images[0].image
+                      : ""
+                  }
                   text={product.name}
                   label={product.category.name}
                   price={product.price}

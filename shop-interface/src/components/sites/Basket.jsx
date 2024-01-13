@@ -133,7 +133,7 @@ function Basket() {
                   {" PLN"}
                 </span>
               </div>
-              <Link to="/purchase-form">
+              <Link to="/purchase-form" className="finalize-button-link">
                 <button className="finalize-button">FINALIZE YOUR ORDER</button>
               </Link>
             </div>

@@ -4,30 +4,41 @@ body {
 }
 
 .basket-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   min-height: 400px;
   max-width: 1200px;
-  margin: 0 0;
+  margin: 0 auto;
   padding: 0;
 }
 
 .basket-header {
-  font-size: 3.5rem;
+  font-size: 2rem;
   font-weight: 700;
   width: 100%;
   margin-top: 5px;
   text-align: center;
-  padding: 3rem 0;
+  padding: 2rem 0;
 }
 
 .basket-items-wrapper {
   display: flex;
-  padding: 3rem;
-  justify-content: space-around;
+  flex-direction: row; /* Kolumnowy układ dla mniejszych ekranów */
+  align-items: flex-start;
+  width: 100%;
+  padding: 1rem;
 }
 
 .basket-items-list {
-  padding: 0 2rem;
+  display: flex;
+  flex: 1 1 60%;
+  flex-direction: column;
+  flex-wrap: wrap; /* Umożliwienie zawijania elementów */
+  justify-content: space-around;
+  width: 100%;
+  padding: 0 1rem;
   text-decoration: none;
   list-style: none;
 }
@@ -35,32 +46,36 @@ body {
 .basket-item {
   background-color: #fff;
   padding: 1rem;
+  max-width: 70%;
   display: flex;
+  flex-direction: column; /* Kolumnowy układ dla elementów koszyka */
+  align-items: center;
   border-radius: 1rem;
+  margin-bottom: 1rem;
 }
 
 .item-image-wrapper {
-  float: left;
   padding-right: 0.5rem;
 }
 
 .item-image {
-  max-width: 8rem;
-  max-height: 10rem;
+  width: 50vw; /* Obraz będzie zajmował 50% szerokości widoku */
+  max-width: 100%; /* Dodaj, aby obraz nie przekraczał szerokości kontenera */
+  height: auto; /* Zachowaj proporcje obrazu */
 }
 
 .item-header {
-  font-size: 1.3rem;
+  font-size: 2rem;
 }
 
 .item-price {
-  font-size: 1rem;
-  padding: 0.5rem 0;
+  font-size: 1.5rem;
+  padding: 0.7rem 0;
 }
 
 .item-detail-list {
   list-style: none;
-  font-size: 0.7rem;
+  font-size: 1rem;
 }
 
 .item-detail-el {
@@ -76,7 +91,6 @@ body {
 
 .select-number-module {
   padding: 1rem 2rem;
-  float: left;
 }
 
 #select-amount {
@@ -107,6 +121,7 @@ body {
 
 .basket-sidebar {
   background-color: #fff;
+  flex: 1 1 30%;
   padding: 1rem 1rem;
   border-radius: 1rem;
   box-shadow: 0 6px 20px rgba(56, 125, 255, 0.25);
@@ -159,7 +174,18 @@ body {
   padding-bottom: 2rem;
 }
 
+.finalize-button-link {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.finalize-button-link {
+  text-decoration: none;
+  color: inherit;
+}
 .finalize-button {
+  display: flex;
   background-color: transparent;
   border: 2px solid rgb(19, 19, 19);
   min-width: 100px;
@@ -174,4 +200,34 @@ body {
   background-color: rgb(19, 19, 19);
   color: white;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .basket-header {
+    font-size: 1.5rem;
+    padding: 1rem 0;
+  }
+
+  .basket-items-list {
+    flex-direction: column;
+    align-items: center;
+  }
+  .basket-items-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .basket-sidebar {
+    margin-top: 2rem;
+    width: 80%;
+  }
+
+  .basket-item {
+    width: 100%;
+  }
+
+  .finalize-button {
+    min-width: 80px;
+    padding: 5px;
+  }
 }

@@ -15,7 +15,7 @@
   padding: 2rem;
   margin: 2rem; /* Zmniejszony margines dla mniejszych ekranów */
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: #e2d560;
   min-height: 28rem;
 }
 
@@ -38,8 +38,8 @@
 }
 
 .slider {
-  width: 40rem;
-  height: 30rem;
+  width: 30rem;
+  height: 40rem;
 }
 
 .item-info-wrapper {
@@ -54,6 +54,8 @@
 }
 
 .image-wrap {
+  width: 30rem;
+  height: 40rem;
   object-fit: contain;
 }
 

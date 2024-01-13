@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Product, ProductVariant, Customer, Order, OrderDetail, ProductImage
+from .models import Category, SizeVariant, Product, ProductVariant, Customer, Order, OrderDetail, ProductImage
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,21 +14,24 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    category = CategorySerializer()
-    images = ProductImageSerializer(many=True, read_only=True)
-
     class Meta:
         model = Product
-        fields = ['id', 'name', 'category', 'price', 'images']
-        
+        fields = ['id', 'name', 'category', 'price', 'sizes']
+        depth = 1  # To show size details
 
+class SizeVariantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SizeVariant
+        fields = ['size', 'stock_quantity']
 
 class ProductVariantSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
+    images = ProductImageSerializer(many=True, read_only=True)
+    size_variants = SizeVariantSerializer(many=True, read_only=True)
 
     class Meta:
         model = ProductVariant
-        fields = ['id', 'product', 'size', 'color', 'stock_quantity']
+        fields = ['id', 'product', 'color', 'images', 'size_variants']
 
 class CustomerSerializer(serializers.ModelSerializer):
     

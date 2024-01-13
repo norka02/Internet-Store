@@ -14,8 +14,8 @@ function Basket() {
     removeFromCart,
   } = useContext(ShopContext);
 
-  const handleQuantityChange = (productId, sizeId, color, newQuantity) => {
-    updateCartItemCount(productId, sizeId, color, parseInt(newQuantity));
+  const handleQuantityChange = (productVariantId, sizeId, newQuantity) => {
+    updateCartItemCount(productVariantId, sizeId, parseInt(newQuantity));
   };
   const deliveryCost = 13.99;
 
@@ -26,46 +26,45 @@ function Basket() {
         <div className="basket-items-wrapper">
           <ul className="basket-items-list">
             {cartItems.map((item, index) => {
-              const product = products.find((p) => p.id === item.productId);
-              if (!product) return null;
+              const productVariant = products.find(
+                (p) => p.id === item.productVariantId
+              );
+              if (!productVariant) return null;
+
+              const selectedSize = productVariant.product.sizes.find(
+                (s) => s.id === item.sizeId
+              );
+              if (!selectedSize) return null;
 
               return (
                 <li key={index} className="basket-item">
-                  <a href="#">
-                    <div className="item-image-wrapper">
-                      <img
-                        src={product.image_url || "/default-image.jpg"} // Assuming 'image_url' is the key for the image in 'product'
-                        alt={product.name}
-                        className="item-image"
-                      />
-                    </div>
-                  </a>
+                  <div className="item-image-wrapper">
+                    <img
+                      src={`http://localhost:8000${productVariant.images[0].image}`}
+                      alt={productVariant.product.name}
+                      className="item-image"
+                    />
+                  </div>
                   <div className="basket-item-details">
-                    <h2 className="item-header">{product.name}</h2>
-                    <span className="item-price">{product.price} PLN</span>
+                    <h2 className="item-header">
+                      {productVariant.product.name} - {productVariant.color}
+                    </h2>
+                    <span className="item-price">
+                      {productVariant.product.price} PLN
+                    </span>
                     <ul className="item-detail-list">
-                      <li className="item-detail-el">
-                        <span className="item-detail-name">Prod. number:</span>
-                        <span className="item-detail-value">{product.id}</span>
-                      </li>
                       <li className="item-detail-el">
                         <span className="item-detail-name">Size:</span>
                         <span className="item-detail-value">
-                          {item.size}
-                        </span>{" "}
-                        {/* Changed from sizeId to size */}
-                      </li>
-                      <li className="item-detail-el">
-                        <span className="item-detail-name">Color:</span>
-                        <span className="item-detail-value">
-                          {item.color}
-                        </span>{" "}
-                        {/* Assuming color is directly in item */}
+                          {selectedSize.name}
+                        </span>
                       </li>
                       <li className="item-detail-el">
                         <span className="item-detail-name">Sum:</span>
                         <span className="item-detail-value">
-                          {item.quantity * product.price} PLN
+                          {item.quantity *
+                            parseFloat(productVariant.product.price)}{" "}
+                          PLN
                         </span>
                       </li>
                     </ul>
@@ -76,9 +75,8 @@ function Basket() {
                           value={item.quantity}
                           onChange={(e) =>
                             handleQuantityChange(
-                              item.productId,
-                              item.size, // Assuming size is directly in item
-                              item.color, // Assuming color is directly in item
+                              item.productVariantId,
+                              item.sizeId,
                               e.target.value
                             )
                           }
@@ -90,20 +88,14 @@ function Basket() {
                             </option>
                           ))}
                         </select>
-                        <div className="basket-item-actions">
-                          <button
-                            onClick={() =>
-                              removeFromCart(
-                                item.productId,
-                                item.size,
-                                item.color
-                              )
-                            }
-                            className="remove-from-cart-button"
-                          >
-                            Remove
-                          </button>
-                        </div>
+                        <button
+                          onClick={() =>
+                            removeFromCart(item.productVariantId, item.sizeId)
+                          }
+                          className="remove-from-cart-button"
+                        >
+                          Remove
+                        </button>
                       </div>
                     </div>
                   </div>

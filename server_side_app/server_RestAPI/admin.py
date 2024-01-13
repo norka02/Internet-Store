@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, ProductVariant, Customer, Order, OrderDetail, ProductImage
+from .models import Category, SizeVariant, Product, ProductVariant, Customer, Order, OrderDetail, ProductImage, Size 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -12,22 +12,40 @@ class ProductImageInline(admin.TabularInline):
 class ProductVariantInline(admin.TabularInline):
     model = ProductVariant
     extra = 1
+    
+class SizeVariantInline(admin.TabularInline):
+    model = SizeVariant
+    extra = 1
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'price')
     list_filter = ('category',)
-    inlines = [ProductImageInline, ProductVariantInline]
+    filter_horizontal = ('sizes',) 
     
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ('id', 'product', 'image')
-    list_filter = ['product']
+    list_display = ('id', 'product_variant', 'image')
+    list_filter = ['product_variant__product', 'product_variant']
+
+    def product_variant(self, obj):
+        return obj.product_variant
+
+@admin.register(Size)
+class SizeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+    list_filter = ['id', 'name']
+
+@admin.register(SizeVariant)
+class SizeVariantAdmin(admin.ModelAdmin):
+    list_display = ('product_variant', 'size', 'stock_quantity')
+    list_filter = ['product_variant', 'size', 'stock_quantity']
 
 @admin.register(ProductVariant)
 class ProductVariantAdmin(admin.ModelAdmin):
-    list_display = ('id', 'product', 'size', 'color', 'stock_quantity')
-    list_filter = ('product', 'size', 'color')
+    list_display = ('id', 'product', 'color')
+    list_filter = ('product', 'color')
+    inlines = [ProductImageInline, SizeVariantInline]
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):

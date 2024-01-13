@@ -11,22 +11,20 @@ from django.db import transaction
 
 class AllProductsView(APIView):
     def get(self, request):
-        products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
+        products = ProductVariant.objects.all()
+        serializer = ProductVariantSerializer(products, many=True)
         return Response(serializer.data)
         
 
 class ProductView(APIView):
     def get(self, request, product_id):
         try:
-            product_variants = ProductVariant.objects.filter(product__id=product_id)
-            if not product_variants:
-                return Response({"error": "No variants found for the given product"}, status=status.HTTP_404_NOT_FOUND)
-           
-            serializer = ProductVariantSerializer(product_variants, many=True)
+            product = ProductVariant.objects.get(id=product_id)
+            serializer = ProductVariantSerializer(product)
             return Response(serializer.data)
         except Product.DoesNotExist:
             return Response({"error": "Product does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
 
 
 
@@ -62,10 +60,18 @@ class CreateOrderView(APIView):
             
             for item_data in items_data:
                 product_variant = ProductVariant.objects.get(
-                    product_id=item_data['productId'],
-                    size=item_data['size'],
-                    color=item_data['color']
+                    id=item_data['productVariantId']
+                    # product_id=item_data['productId'],
+                    # size=item_data['size'],
+                    # color=item_data['color']
                 )
+                # order_detail = OrderDetail(
+                #     order=order,
+                #     product_variant=product_variant,
+                #     quantity=item_data['quantity'],
+                #     unit_price=product_variant.product.price
+                # )
+                # order_detail.save()
                 order_detail = OrderDetail(
                     order=order,
                     product_variant=product_variant,

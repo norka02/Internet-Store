@@ -4,7 +4,7 @@ import "./Cards.css";
 import axios from "axios";
 
 function Cards() {
-  const [products, setProducts] = useState([]);
+  const [productsVariants, setProductsVariants] = useState([]);
   const baseUrl = "http://localhost:8000";
 
   useEffect(() => {
@@ -12,7 +12,7 @@ function Cards() {
       try {
         const response = await axios.get(`${baseUrl}/api/products/`);
         console.log(response.data);
-        setProducts(response.data);
+        setProductsVariants(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -28,18 +28,18 @@ function Cards() {
         <div className="cards-container">
           <div className="cards-wrapper">
             <ul className="cards-items">
-              {products.map((product) => (
+              {productsVariants.map((productVariant) => (
                 <ProductCard
-                  path={`/products/${product.id}`}
-                  key={product.id}
+                  path={`/products/${productVariant.id}`}
+                  key={productVariant.id}
                   src={
-                    product.images.length > 0
-                      ? baseUrl + product.images[0].image
+                    productVariant.images.length > 0
+                      ? baseUrl + productVariant.images[0].image
                       : ""
                   }
-                  text={product.name}
-                  label={product.category.name}
-                  price={product.price}
+                  text={productVariant.product.name}
+                  label={productVariant.product.category.name}
+                  price={productVariant.product.price}
                 />
               ))}
             </ul>

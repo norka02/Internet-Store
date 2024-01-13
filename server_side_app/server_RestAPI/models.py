@@ -5,32 +5,46 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Size(models.Model):
+    name = models.CharField(max_length=10)  # Example: 'S', 'M', 'L', etc.
+
+    def __str__(self):
+        return self.name
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    sizes = models.ManyToManyField(Size)
 
     def __str__(self):
         return self.name
     
-
-class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='product_images/')
-    
-    def __str__(self) -> str:
-        return f"Image for product id: {self.product.name}"
-
-
 class ProductVariant(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    size = models.CharField(max_length=50)
     color = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.color}"
+    
+
+class SizeVariant(models.Model):
+    product_variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE, related_name='size_variants')
+    size = models.ForeignKey(Size, on_delete=models.CASCADE)
     stock_quantity = models.IntegerField()
 
     def __str__(self):
-        return f"{self.product.name} - {self.size}, {self.color}"
+        return f"{self.product_variant.product.name} - {self.product_variant.color} - {self.size.name}"
+
+
+class ProductImage(models.Model):
+    product_variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='product_images/')
+
+    def __str__(self) -> str:
+        return f"Image for product variant id: {self.product_variant.id}"
+
 
 class Customer(models.Model):
     first_name = models.CharField(max_length=100)

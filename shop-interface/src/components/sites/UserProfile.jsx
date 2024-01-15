@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RegisterForm from '../RegisterForm';
 import LoginForm from '../LoginForm';
+import './UserProfile.css'
 
 const NavBar = () => {
   const [loggedIn, setLoggedIn] = useState(false); // Przykładowy stan zalogowania
@@ -13,22 +14,23 @@ const NavBar = () => {
   };
 
   return (
-    <div>
+    <div className='user-profile-container'>
       {loggedIn ? (
         // Wyświetl zamówienia i przycisk Sign Out, jeśli zalogowany
-        <div>
-          <h2>Twoje zamówienia</h2>
+        <div className='user-profile-container'>
+          <h2 className='user-profile-title'>Twoje zamówienia</h2>
           {/* Tutaj dodaj kod do wyświetlania zamówień */}
-          <button onClick={handleSignOut}>Sign Out</button>
+          <button className='user-profile-button user-profile-sign-out-button' onClick={handleSignOut}>Sign Out</button>
         </div>
       ) : (
         // Showing buttons to sign in and sign up if you are not logged
-        <div>        
-          <Link to="/sign-in">
-            <button>Sign In</button>
+        <div className='user-profile-container'>
+            <h2 className='user-profile-title'>Profil Klienta</h2>
+          <Link to="/sign-in" className='user-profile-link'>
+            <button className='user-profile-button user-profile-action-button'>Sign In</button>
           </Link>
-          <Link to="/register-form">
-            <button>Sign Up</button>
+          <Link to="/register-form" className='user-profile-link'>
+            <button className='user-profile-button user-profile-action-button'>Sign Up</button>
           </Link>
         </div>
       )}

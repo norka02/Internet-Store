@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useContext } from "react";
 import { ShopContext } from "./sites/context/shop-context";
+import './Checkout.css'
 
 export default function Checkout() {
   const paypal = useRef();
@@ -39,8 +40,8 @@ export default function Checkout() {
   }, []);
 
   return (
-    <div>
-      <div ref={paypal}></div>
+    <div className="checkout-container">
+      <div className="checkout-container-2" ref={paypal}></div>
     </div>
   );
 }

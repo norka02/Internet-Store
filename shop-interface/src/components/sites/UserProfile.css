@@ -1,0 +1,43 @@
+
+.user-profile-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+  }
+  
+  .user-profile-title {
+    color: #333;
+  }
+  
+  .user-profile-button {
+    background-color: #003087;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .user-profile-button:hover {
+    background-color: #001e5a;
+  }
+  
+  /* Style for the links */
+  .user-profile-link {
+    text-decoration: none;
+  }
+  
+  /* Style for the Sign In and Sign Up buttons */
+  .user-profile-action-button {
+    margin-right: 10px;
+  }
+  
+  /* Style for the Sign Out button */
+  .user-profile-sign-out-button {
+    margin-top: 20px;
+  }
+  

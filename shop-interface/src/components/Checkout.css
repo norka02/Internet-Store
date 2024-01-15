@@ -1,0 +1,27 @@
+
+.checkout-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+  }
+  
+  .checkout-container-2 {
+    margin-top: 20px;
+  }
+  
+  /* Styling for PayPal button */
+  .checkout-button {
+    background-color: #003087;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .checkout-button:hover {
+    background-color: #001e5a;
+  }

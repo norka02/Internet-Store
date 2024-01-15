@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useNavigate } from 'react-router-dom';
+import './RegisterForm.css'
 
 const RegisterForm = () => {
     const [registerData, setRegisterData] = useState({
@@ -73,20 +74,21 @@ const RegisterForm = () => {
     };
 
     return (
-        <div>
-            <h2>Formularz rejestracji</h2>
-            <label>First Name:</label>
-            <input type="text" name='firstName' value={registerData.firstName} onChange={handleChange} />
+        <div className='register-form-container'>
+            <h2 className='register-form-title'>Formularz rejestracji</h2>
+            
+            <label className='register-form-label'>First Name:</label>
+            <input className='register-form-input' type="text" name='firstName' value={registerData.firstName} onChange={handleChange} />
 
-            <label>Last Name:</label>
-            <input type="text" name='lastName' value={registerData.lastName} onChange={handleChange} />
+            <label className='register-form-label'>Last Name:</label>
+            <input className='register-form-input' type="text" name='lastName' value={registerData.lastName} onChange={handleChange} />
 
-            <label>Email:</label>
-            <input type="text" name='email' value={registerData.email} onChange={handleChange} pattern="[^\s@]+@[^\s@]+\.[^\s@]+" /> 
+            <label className='register-form-label'>Email:</label>
+            <input className='register-form-input' type="text" name='email' value={registerData.email} onChange={handleChange} pattern="[^\s@]+@[^\s@]+\.[^\s@]+" /> 
             {/* //(e) => setRegisterData(e.target.value) */}
 
-            <label>Password:</label>
-            <input type="password" name='password' value={registerData.password} onChange={handleChange} />
+            <label className='register-form-label'>Password:</label>
+            <input className='register-form-input' type="password" name='password' value={registerData.password} onChange={handleChange} />
 
             {/* <label>Phone:</label>
             <input type="tel" name='phone' value={registerData.phone} onChange={handleChange} /> 
@@ -114,7 +116,7 @@ const RegisterForm = () => {
                 onChange={(value) => setRecaptchaValue(value)}
             />
 
-            <button onClick={handleRegister}>Register</button>
+            <button className='register-form-button' onClick={handleRegister}>Register</button>
         </div>
     );
 };

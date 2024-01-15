@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useNavigate } from 'react-router-dom';
+import './LoginForm.css'
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
@@ -51,19 +52,21 @@ const LoginForm = () => {
     //   };
 
     return (
-        <div>
-            <label>Email:</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <div className='login-form-container'>
+            <h2 className='login-form-title'>Formularz logowania</h2>
+            
+            <label className='login-form-label'>Email:</label>
+            <input className='login-form-input' type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
 
-            <label>Password:</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <label className='login-form-label'>Password:</label>
+            <input className='login-form-input' type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
             <ReCAPTCHA
                 sitekey="6Lem2SInAAAAAFr2kVbbMxuzWnfWjIy-_GpWYRwR"   //TODO: dodać recaptchaKEY
                 onChange={(value) => setRecaptchaValue(value)}
             />
 
-            <button onClick={handleLogin}>Sign In</button>
+            <button className='login-form-button' onClick={handleLogin}>Sign In</button>
         </div>
     );
 };

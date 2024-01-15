@@ -4,7 +4,7 @@ import axios from "axios";
 import { ShopContext } from "./sites/context/shop-context";
 
 const PurchaseForm = () => {
-  const [customerData, setCustomerData] = useState({
+  const [customerData, setCustomerData, checkout] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -35,7 +35,7 @@ const PurchaseForm = () => {
       .post("http://localhost:8000/api/orders/", orderData)
       .then((response) => {
         console.log(response.data);
-        // Obsługa po pomyślnym wysłaniu danych (np. wyświetlenie komunikatu, wyczyszczenie koszyka)
+        checkout();
       })
       .catch((error) => {
         console.error("Error sending order", error);
@@ -43,7 +43,6 @@ const PurchaseForm = () => {
       });
   };
 
-  const [checkout, setCheckOut] = useState(false);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -144,23 +143,12 @@ const PurchaseForm = () => {
           />
         </label>
       </div>
-      {/* ... (pozostałe pola adresu) */}
       <div>
         <p>Całkowita cena zamówienia: {getTotalCartAmount()} PLN</p>
       </div>
-      {/* <button type="submit">Złóż zamówienie</button> */}
-      {checkout ? (
-        <Link to='/checkout'>Checkout</Link>
-      ) : (
-        <button type="submit"
-          onClick={(e) => {
-            setCheckOut(true);
-          }}
-        >
-          Złóż zamówienie
-        </button>
-      )}
-      {/* {checkout && <button type="submit">Submit</button>} */}
+      <Link to="/checkout">
+        <button type="submit">Złóż zamówienie</button>
+      </Link>
     </form>
   );
 };

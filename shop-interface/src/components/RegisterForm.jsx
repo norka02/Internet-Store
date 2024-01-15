@@ -9,13 +9,13 @@ const RegisterForm = () => {
         lastName: "",
         email: "",
         password: "",
-        phone: "",
-        street: "",
-        houseNumber: "",
-        apartmentNumber: "",
-        city: "",
-        postalCode: "",
-        province: "",
+        // phone: "",
+        // street: "",
+        // houseNumber: "",
+        // apartmentNumber: "",
+        // city: "",
+        // postalCode: "",
+        // province: "",
     })
     const [recaptchaValue, setRecaptchaValue] = useState(null);
     const navigate = useNavigate();
@@ -64,6 +64,7 @@ const RegisterForm = () => {
               },
             }); //requestData api/
             console.log(response.data);
+            navigate('/user-profile')
             // Dodaj kod obsługi pozytywnej odpowiedzi
         } catch (error) {
             console.error('Error during registration:', error.response.data);
@@ -87,7 +88,7 @@ const RegisterForm = () => {
             <label>Password:</label>
             <input type="password" name='password' value={registerData.password} onChange={handleChange} />
 
-            <label>Phone:</label>
+            {/* <label>Phone:</label>
             <input type="tel" name='phone' value={registerData.phone} onChange={handleChange} /> 
 
             <label>Street:</label>
@@ -106,7 +107,7 @@ const RegisterForm = () => {
             <input type="text" name='postalCode' value={registerData.postalCode} onChange={handleChange} /> 
 
             <label>Province:</label>
-            <input type="text" name='province' value={registerData.province} onChange={handleChange} /> 
+            <input type="text" name='province' value={registerData.province} onChange={handleChange} />  */}
 
             <ReCAPTCHA
                 sitekey="6Lem2SInAAAAAFr2kVbbMxuzWnfWjIy-_GpWYRwR"

@@ -4,7 +4,7 @@ import RegisterForm from '../RegisterForm';
 import LoginForm from '../LoginForm';
 
 const NavBar = () => {
-  const [loggedIn, setLoggedIn] = useState(true); // Przykładowy stan zalogowania
+  const [loggedIn, setLoggedIn] = useState(false); // Przykładowy stan zalogowania
   //TODO: zarządzanie sesją react -> zmienna globalna? loggedIn (pobranie sesji z serwera?)
 
   const handleSignOut = () => {

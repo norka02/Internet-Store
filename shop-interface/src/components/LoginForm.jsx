@@ -4,7 +4,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [recaptchaValue, setRecaptchaValue] = useState(null);
     const navigate = useNavigate();
@@ -14,15 +14,17 @@ const LoginForm = () => {
             alert('Please complete the reCAPTCHA!');
             return;
         }
-
+        
+        console.log(email, password);
+    
         try {
-            const response = await axios.post('http://localhost:8000/api/login/', { username, password }); //, recaptchaValue
+            const response = await axios.post('http://localhost:8000/api/login/', { email, password }); //, recaptchaValue
             console.log(response.data);
             alert("Login successful ;)")
-            navigate("/");
+            navigate('/user-profile')
         } catch (error) {
             console.error('Error during login:', error.response.data);
-            alert("Either the password is incorrect or the username :((")
+            alert("Either the password is incorrect or the email :((")
             navigate("/sign-in");
         }
     };
@@ -50,8 +52,8 @@ const LoginForm = () => {
 
     return (
         <div>
-            <label>Username:</label>
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+            <label>Email:</label>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
 
             <label>Password:</label>
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />

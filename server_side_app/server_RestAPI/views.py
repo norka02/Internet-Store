@@ -15,22 +15,20 @@ from rest_framework import generics
 
 class AllProductsView(APIView):
     def get(self, request):
-        products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
+        products = ProductVariant.objects.all()
+        serializer = ProductVariantSerializer(products, many=True)
         return Response(serializer.data)
         
 
 class ProductView(APIView):
     def get(self, request, product_id):
         try:
-            product_variants = ProductVariant.objects.filter(product__id=product_id)
-            if not product_variants:
-                return Response({"error": "No variants found for the given product"}, status=status.HTTP_404_NOT_FOUND)
-           
-            serializer = ProductVariantSerializer(product_variants, many=True)
+            product = ProductVariant.objects.get(id=product_id)
+            serializer = ProductVariantSerializer(product)
             return Response(serializer.data)
         except Product.DoesNotExist:
             return Response({"error": "Product does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
 
 
 
@@ -66,10 +64,18 @@ class CreateOrderView(APIView):
             
             for item_data in items_data:
                 product_variant = ProductVariant.objects.get(
-                    product_id=item_data['productId'],
-                    size=item_data['size'],
-                    color=item_data['color']
+                    id=item_data['productVariantId']
+                    # product_id=item_data['productId'],
+                    # size=item_data['size'],
+                    # color=item_data['color']
                 )
+                # order_detail = OrderDetail(
+                #     order=order,
+                #     product_variant=product_variant,
+                #     quantity=item_data['quantity'],
+                #     unit_price=product_variant.product.price
+                # )
+                # order_detail.save()
                 order_detail = OrderDetail(
                     order=order,
                     product_variant=product_variant,
@@ -141,13 +147,31 @@ class RegisterCustomer(APIView):
 
 class LoginCustomer(APIView):
     def post(self, request):
-        username = request.data.get('username')
-        password = request.data.get('password')
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            password = serializer.validated_data['password']
 
-        user = authenticate(request, username=username, password=password)
+            # Sprawdź, czy istnieje użytkownik o podanym adresie e-mail
+            user = authenticate(request, email=email, password=password)
 
-        if user is not None:
-            login(request, user)
-            return Response({'success': 'User logged in successfully'}, status=status.HTTP_200_OK)
-        else:
-            return Response({'error': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
+            if user is not None:
+                # Zaloguj użytkownika
+                login(request, user)
+                return Response({'message': 'Zalogowano pomyślnie'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'Błędny adres e-mail lub hasło'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# class LoginCustomer(APIView):
+#     def post(self, request):
+#         email = request.data.get('email')
+#         password = request.data.get('password')
+
+#         user = authenticate(request, email=email, password=password)
+
+#         if user is not None:
+#             login(request, user)
+#             return Response({'success': 'User logged in successfully'}, status=status.HTTP_200_OK)
+#         else:
+#             return Response({'error': 'Invalid email or password'}, status=status.HTTP_401_UNAUTHORIZED)

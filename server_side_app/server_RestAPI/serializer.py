@@ -1,24 +1,37 @@
 from rest_framework import serializers
-from .models import Category, Product, ProductVariant, Customer, Order, OrderDetail, CustomerAccount
+from .models import Category, SizeVariant, Product, ProductVariant, Customer, Order, OrderDetail, CustomerAccount, ProductImage
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name']
+        
+
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ['image']
+
 
 class ProductSerializer(serializers.ModelSerializer):
-    category = CategorySerializer()
-
     class Meta:
         model = Product
-        fields = ['id', 'name', 'category', 'price']
+        fields = ['id', 'name', 'category', 'price', 'sizes']
+        depth = 1  # To show size details
+
+class SizeVariantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SizeVariant
+        fields = ['size', 'stock_quantity']
 
 class ProductVariantSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
+    images = ProductImageSerializer(many=True, read_only=True)
+    size_variants = SizeVariantSerializer(many=True, read_only=True)
 
     class Meta:
         model = ProductVariant
-        fields = ['id', 'product', 'size', 'color', 'stock_quantity']
+        fields = ['id', 'product', 'color', 'images', 'size_variants']
 
 class CustomerSerializer(serializers.ModelSerializer):
     
@@ -101,6 +114,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
 #         )
 #         return user
 
-
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
 
 

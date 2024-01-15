@@ -20,20 +20,16 @@ export const ShopContextProvider = (props) => {
       .catch((error) => console.error("Error fetching products", error));
   }, []);
 
-  const addToCart = (productId, size, color) => {
+  const addToCart = (productVariantId, sizeId) => {
     const existingItem = cartItems.find(
       (item) =>
-        item.productId === productId &&
-        item.size === size &&
-        item.color === color
+        item.productVariantId === productVariantId && item.sizeId === sizeId
     );
 
     if (existingItem) {
       setCartItems((prev) =>
         prev.map((item) =>
-          item.productId === productId &&
-          item.size === size &&
-          item.color === color
+          item.productVariantId === productVariantId && item.sizeId === sizeId
             ? { ...item, quantity: item.quantity + 1 }
             : item
         )
@@ -41,30 +37,26 @@ export const ShopContextProvider = (props) => {
     } else {
       setCartItems((prev) => [
         ...prev,
-        { productId, size, color, quantity: 1 },
+        { productVariantId, sizeId, quantity: 1 },
       ]);
     }
   };
 
-  const removeFromCart = (productId, size, color) => {
+  const removeFromCart = (productVariantId, sizeId) => {
     setCartItems((prev) =>
       prev.filter(
         (item) =>
           !(
-            item.productId === productId &&
-            item.size === size &&
-            item.color === color
+            item.productVariantId === productVariantId && item.sizeId === sizeId
           )
       )
     );
   };
 
-  const updateCartItemCount = (productId, size, color, newQuantity) => {
+  const updateCartItemCount = (productVariantId, sizeId, newQuantity) => {
     setCartItems((prev) =>
       prev.map((item) =>
-        item.productId === productId &&
-        item.size === size &&
-        item.color === color
+        item.productVariantId === productVariantId && item.sizeId === sizeId
           ? { ...item, quantity: newQuantity }
           : item
       )
@@ -74,9 +66,11 @@ export const ShopContextProvider = (props) => {
   const getTotalCartAmount = () => {
     let totalAmount = 0;
     for (const item of cartItems) {
-      const product = products.find((p) => p.id === item.productId);
-      if (product) {
-        totalAmount += item.quantity * parseFloat(product.price);
+      const productVariant = products.find(
+        (p) => p.id === item.productVariantId
+      );
+      if (productVariant) {
+        totalAmount += item.quantity * parseFloat(productVariant.product.price);
       }
     }
     return totalAmount;

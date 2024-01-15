@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { ShopContext } from "./sites/context/shop-context";
 
@@ -41,6 +42,8 @@ const PurchaseForm = () => {
         // Obsługa błędów
       });
   };
+
+  const [checkout, setCheckOut] = useState(false);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -145,7 +148,19 @@ const PurchaseForm = () => {
       <div>
         <p>Całkowita cena zamówienia: {getTotalCartAmount()} PLN</p>
       </div>
-      <button type="submit">Złóż zamówienie</button>
+      {/* <button type="submit">Złóż zamówienie</button> */}
+      {checkout ? (
+        <Link to='/checkout'>Checkout</Link>
+      ) : (
+        <button type="submit"
+          onClick={(e) => {
+            setCheckOut(true);
+          }}
+        >
+          Złóż zamówienie
+        </button>
+      )}
+      {/* {checkout && <button type="submit">Submit</button>} */}
     </form>
   );
 };

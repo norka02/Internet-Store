@@ -26,7 +26,8 @@ class ProductVariant(models.Model):
 class Customer(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
+    # password = models.CharField(max_length=128)
     phone = models.CharField(max_length=15)
     street = models.CharField(max_length=255)
     house_number = models.CharField(max_length=10)
@@ -54,3 +55,13 @@ class OrderDetail(models.Model):
     product_variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+class CustomerAccount(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=128)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"

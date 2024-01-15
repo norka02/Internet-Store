@@ -1,9 +1,13 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useContext } from "react";
+import { ShopContext } from "./sites/context/shop-context";
 
 export default function Checkout() {
   const paypal = useRef();
 
+  const {getTotalCartAmount, cardItems} = useContext(ShopContext);
+
   useEffect(() => {
+    console.log(cardItems)
     window.paypal
       .Buttons({
         createOrder: (data, actions, err) => {
@@ -12,19 +16,20 @@ export default function Checkout() {
             purchase_units: [
               {
                 //TODO: connect with database?
-                description: "Hoodie",
+                description: cardItems,
                 amount: {
                   currency_code: "PLN",
-                  value: 333.0,
+                  value: getTotalCartAmount(),
                 },
               },
             ],
           });
         },
         onApprove: async (data, actions) => {   
-            // TODO: sending mail providing info that transaction gone succesfully
+            // TODO: sending mail providing info that transaction gone succesfully 
           const order = await actions.order.capture();
           console.log(order);
+          alert("Payment successful")
         },
         onError: (err) => {
           console.log(err);

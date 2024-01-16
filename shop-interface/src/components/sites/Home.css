@@ -1,12 +1,78 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
 
-html, body {
-    height: 100%;
-    margin: 0;
+.home-container {
+  text-align: center;
+  padding: 3rem;
+  text-align: center;
+  position: relative;
+  min-height: 70vh;
+  max-width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.home-header h1 {
+  color: #333;
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.latest-news {
+  padding: 2rem;
+}
+
+.home-header p {
+  margin: 2rem;
+  color: #555;
+  font-size: 1.2em;
+}
+
+.featured-products,
+.about-us {
+  padding: 1rem 1rem;
+  margin: 2rem;
+}
+
+.featured-products h2,
+.about-us h2 {
+  color: #333;
+  font-size: 2em;
+}
+
+.featured-products p,
+.about-us p {
+  color: #666;
+  font-size: 1em;
+}
+
+.link-text {
+  text-decoration: none;
+  transition: transform 0.5s ease-in-out;
+  display: inline-block;
+}
+
+.link-text:hover {
+  animation: pulse 1.5s infinite;
+  cursor: pointer;
+}
+
+.link-text:visited {
+  text-decoration: none;
+  color: #333;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
   }
-  
-.container {
-    color: #FFF;
-    text-align: center;
-    position: relative;
-    min-height: 70vh;
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

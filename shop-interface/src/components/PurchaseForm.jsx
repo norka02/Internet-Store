@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { ShopContext } from "./sites/context/shop-context";
 
@@ -41,6 +42,7 @@ const PurchaseForm = () => {
         // Obsługa błędów
       });
   };
+
 
   return (
     <form onSubmit={handleSubmit}>
@@ -144,7 +146,9 @@ const PurchaseForm = () => {
       <div>
         <p>Całkowita cena zamówienia: {getTotalCartAmount()} PLN</p>
       </div>
-      <button type="submit">Złóż zamówienie</button>
+      <Link to="/checkout">
+        <button type="submit">Złóż zamówienie</button>
+      </Link>
     </form>
   );
 };

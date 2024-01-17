@@ -123,6 +123,9 @@ class CustomerAccount(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
 
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
     objects = CustomerAccountManager()
 
     USERNAME_FIELD = 'email'

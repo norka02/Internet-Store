@@ -7,8 +7,9 @@ from rest_framework.views import APIView
 from rest_framework import status
 from django.db import transaction
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from rest_framework import generics
+# from rest_framework_simplejwt.tokens import RefreshToken
 
 
 
@@ -145,23 +146,49 @@ class RegisterCustomer(APIView):
 #         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
 
+### TO JEST DZIAŁAJĄCE
+# class LoginCustomer(APIView):
+#     def post(self, request):
+#         serializer = LoginSerializer(data=request.data)
+#         if serializer.is_valid():
+#             email = serializer.validated_data['email']
+#             password = serializer.validated_data['password']
+
+#             # Sprawdź, czy istnieje użytkownik o podanym adresie e-mail
+#             user = authenticate(request, email=email, password=password)
+
+#             if user is not None:
+#                 # Zaloguj użytkownika
+#                 login(request, user)
+#                 return Response({'message': 'Zalogowano pomyślnie'}, status=status.HTTP_200_OK)
+#             else:
+#                 return Response({'error': 'Błędny adres e-mail lub hasło'}, status=status.HTTP_401_UNAUTHORIZED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 class LoginCustomer(APIView):
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.validated_data['email']
             password = serializer.validated_data['password']
+            
+            # Sprawdź, czy istnieje użytkownik o podanym adresie email
+            customer = CustomerAccount.objects.filter(email=email).first()
 
-            # Sprawdź, czy istnieje użytkownik o podanym adresie e-mail
-            user = authenticate(request, email=email, password=password)
+            if customer and check_password(password, customer.password):
+                # Zaloguj użytkownika, możesz tutaj użyć tokenów JWT, sesji Django itp.
+                # Utwórz token dostępu
+                # refresh = RefreshToken.for_user(customer)
+                # access_token = str(refresh.access_token)
 
-            if user is not None:
-                # Zaloguj użytkownika
-                login(request, user)
-                return Response({'message': 'Zalogowano pomyślnie'}, status=status.HTTP_200_OK)
+                # return Response({'access_token': access_token}, status=status.HTTP_200_OK)
+                return Response({}, status=status.HTTP_200_OK)
             else:
-                return Response({'error': 'Błędny adres e-mail lub hasło'}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response({'error': 'Błędny adres email lub hasło'}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 # class LoginCustomer(APIView):
 #     def post(self, request):

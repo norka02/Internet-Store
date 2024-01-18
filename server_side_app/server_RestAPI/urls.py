@@ -9,5 +9,6 @@ urlpatterns = [
     path('register/', views.RegisterCustomer.as_view(), name='register_customer'),
     # path('register/', views.UserRegistrationView.as_view(), name='user-registration'),
     path('login/', views.LoginCustomer.as_view(), name='login_customer'),
-    path('customerInfoUpdate/', views.CustomerAccountView.as_view(), name='customerInfoUpdate'),
+    path('customerInfoUpdate/<str:email_check>/', views.CustomerAccountView.as_view(), name='customerInfoUpdate'),    
+    #<str:email_check>/
 ] 

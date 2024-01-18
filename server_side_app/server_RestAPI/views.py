@@ -8,7 +8,7 @@ from rest_framework import status
 from django.db import transaction
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password, check_password
-from rest_framework import generics
+from rest_framework.generics import UpdateAPIView
 
 
 
@@ -202,14 +202,68 @@ class LoginCustomer(APIView):
 #             return Response({'success': 'User logged in successfully'}, status=status.HTTP_200_OK)
 #         else:
 #             return Response({'error': 'Invalid email or password'}, status=status.HTTP_401_UNAUTHORIZED)
-    
-class CustomerAccountView(APIView):
-    def post(self, request, *args, **kwargs):
-        serializer = CustomerAccountSerializer(data=request.data)
-        #TODO -> weryfikacja po sesji customera, i na podstawie tych danych update info o nim
+    ##########################
+# class CustomerAccountView(APIView):
+#     def post(self, request, *args, **kwargs):
+#         serializer = CustomerAccountSerializer(data=request.data)
+#         #TODO -> weryfikacja po sesji customera, i na podstawie tych danych update info o nim
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+class CustomerAccountView(UpdateAPIView):
+    queryset = CustomerAccount.objects.all()
+    serializer_class = CustomerAccountSerializer
+
+    def update(self, request, *args, **kwargs):
+        try:
+            email_check = self.kwargs.get('email_check', None)
+            customer = CustomerAccount.objects.get(email=email_check)
+
+            # Wyodrębnij tylko te pola, które są dostarczone w danych wejściowych
+            partial_data = {key: request.data[key] for key in request.data.keys()}
+
+            serializer = self.get_serializer(customer, data=partial_data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except CustomerAccount.DoesNotExist:
+            return Response(
+                {"error": "Klient o podanym identyfikatorze nie istnieje. " + email_check},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {"error": f"Wystąpił błąd: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+# class CustomerAccountView(UpdateAPIView, CustomerAccount):
+#     def post(self, request, *args, **kwargs):   #, email_check
+#         try:
+#             #email_check = request.data.get('email_check', None)
+#             email_check = self.kwargs.get('email_check', None)
+#             serializer = CustomerAccountSerializer(data=request.data)
+#             #TODO -> weryfikacja po sesji customera, i na podstawie tych danych update info o nim
+#             customer = CustomerAccount.objects.get(email=email_check)
+
+#             if serializer.is_valid():
+#                 serializer.save()
+#                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+#             else:
+#                 print(serializer.errors)
+#                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         except CustomerAccount.DoesNotExist:
+#             return Response({"error": "Klient o podanym identyfikatorze nie istnieje. " + email_check}, status=status.HTTP_404_NOT_FOUND)
+#         except Exception as e:
+#             return Response({"error": f"Wystąpił błąd: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

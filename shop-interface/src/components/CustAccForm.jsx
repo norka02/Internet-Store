@@ -40,14 +40,20 @@ const CustAccForm = () => {
 
         
         try {
-            const response = await axios.post('http://localhost:8000/api/customerInfoUpdate/', requestData, {    //registerData
-            });
+            const email_check = sessionStorage.getItem('email')
+            //const response = await axios.post('http://localhost:8000/api/customerInfoUpdate/${email_check}/', requestData, email_check);
+            const response = await axios.patch(`http://localhost:8000/api/customerInfoUpdate/${email_check}/`, requestData);
+            // const response = await axios.post('http://localhost:8000/api/customerInfoUpdate/', requestData, {
+            //     params: {
+            //         email_check: email_check
+            //     }
+            // });
             console.log(response.data);
             navigate('/user-profile')
-            // Dodaj kod obsługi pozytywnej odpowiedzi
+            alert('Updating customer account info gone succesfully')
         } catch (error) {
             console.error('Error during updating customer account info:', error.response.data);
-            // Dodaj kod obsługi błędu
+            alert('Error during updating customer account info -> contact with us')
         }
     };
 
@@ -76,7 +82,7 @@ const CustAccForm = () => {
             <label className='update-form-label'>Province:</label>
             <input className='update-form-input' type="text" name='province' value={registerData.province} onChange={handleChange} />
 
-            <button className='update-form-button' onClick={handleRegister}>Register</button>
+            <button className='update-form-button' onClick={handleRegister}>Update Info</button>
         </div>
     );
 };

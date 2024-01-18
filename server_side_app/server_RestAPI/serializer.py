@@ -119,3 +119,8 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
 
+class CustomerAccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomerAccount
+        fields = '__all__'
+

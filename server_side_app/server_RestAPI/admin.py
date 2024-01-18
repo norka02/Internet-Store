@@ -68,5 +68,7 @@ class OrderDetailAdmin(admin.ModelAdmin):
 
 @admin.register(CustomerAccount)
 class CustomerAccountAAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'email', 'password')
+    list_display = ('id', 'first_name', 'last_name', 'email', 'password', 'phone', 
+                    'street', 'house_number', 'apartment_number', 'city', 
+                    'postal_code', 'province')
     list_filter = ('first_name', 'last_name', 'email')

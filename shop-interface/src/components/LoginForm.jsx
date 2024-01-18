@@ -10,6 +10,7 @@ const LoginForm = () => {
     const [recaptchaValue, setRecaptchaValue] = useState(null);
     const navigate = useNavigate();
 
+
     const handleLogin = async () => {
         if (!recaptchaValue) {
             alert('Please complete the reCAPTCHA!');
@@ -22,7 +23,10 @@ const LoginForm = () => {
             const response = await axios.post('http://localhost:8000/api/login/', { email, password }); //, recaptchaValue
             console.log(response.data);
             alert("Login successful ;)")
+            // setLoggedIn(email);
             navigate('/user-profile')
+            sessionStorage.setItem('isLoggedIn', true)
+            sessionStorage.setItem('email', email)
         } catch (error) {
             console.error('Error during login:', error.response.data);
             alert("Either the password is incorrect or the email :((")

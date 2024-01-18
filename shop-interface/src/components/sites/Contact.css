@@ -2,3 +2,45 @@
     text-align: center;
     padding: 100px;
 }
+
+.contact-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .contact-title {
+    color: #333;
+    font-size: 2em;
+    margin-bottom: 15px;
+  }
+  
+  .contact-text {
+    color: #666;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+  
+  .contact-info {
+    margin-top: 20px;
+  }
+  
+  .contact-info p {
+    margin: 5px 0;
+  }
+  
+  .contact-button {
+    background-color: #4285f4;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .contact-button:hover {
+    background-color: #3367d6;
+  }
+  

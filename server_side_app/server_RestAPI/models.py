@@ -88,6 +88,13 @@ class CustomerAccount(models.Model):
     last_name = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
+    phone = models.CharField(max_length=15, blank=True, default='')
+    street = models.CharField(max_length=255, blank=True, default='')
+    house_number = models.CharField(max_length=10, blank=True, default='')
+    apartment_number = models.CharField(max_length=10, blank=True, default='')
+    city = models.CharField(max_length=100, blank=True, default='')
+    postal_code = models.CharField(max_length=10, blank=True, default='')
+    province = models.CharField(max_length=100, blank=True, default='')
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

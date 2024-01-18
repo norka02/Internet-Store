@@ -8,10 +8,17 @@ const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [recaptchaValue, setRecaptchaValue] = useState(null);
+    const [loginAttempts, setLoginAttempts] = useState(0);
+    const [isBlocked, setIsBlocked] = useState(false);
     const navigate = useNavigate();
 
 
     const handleLogin = async () => {
+        if (isBlocked) {
+            alert('Too many unsuccessful login attempts. Please try again after 2 minutes.');
+            return;
+        }
+
         if (!recaptchaValue) {
             alert('Please complete the reCAPTCHA!');
             return;
@@ -30,6 +37,19 @@ const LoginForm = () => {
         } catch (error) {
             console.error('Error during login:', error.response.data);
             alert("Either the password is incorrect or the email :((")
+
+            // Increment login attempts
+            setLoginAttempts(loginAttempts + 1);
+
+            // If 3 unsuccessful attempts, block for 15 minutes
+            if (loginAttempts >= 2) {
+                setIsBlocked(true);
+                setTimeout(() => {
+                    setIsBlocked(false);
+                    setLoginAttempts(0);
+                }, 120000); // 2 minutes in milliseconds
+            }
+            
             navigate("/sign-in");
         }
     };

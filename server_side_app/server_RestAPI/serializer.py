@@ -84,43 +84,6 @@ class SubscriberSerializer(serializers.ModelSerializer):
         fields = ['email']
 
 
-# class RegistrationSerializer(serializers.Serializer):
-#     first_name = serializers.CharField()
-#     last_name = serializers.CharField()
-#     email = serializers.EmailField()
-#     password = serializers.CharField(write_only=True)
-    # phone = serializers.CharField(allow_blank=True, required=False)
-    # street = serializers.CharField(allow_blank=True, required=False)
-    # house_number = serializers.CharField(allow_blank=True, required=False)
-    # apartament_number = serializers.CharField(allow_blank=True, required=False)
-    # city = serializers.CharField(allow_blank=True, required=False)
-    # postal_code = serializers.CharField(allow_blank=True, required=False)
-    # province = serializers.CharField(allow_blank=True, required=False)
-
-# class UserRegistrationSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Customer
-#         fields = ('email', 'password', 'first_name', 'last_name', 'phone', 'street', 'house_number', 'apartment_number', 'city', 'postal_code', 'province') #'id', 'username', 
-#         extra_kwargs = {
-#             'password': {'write_only': True},
-#         }
-
-#     def create(self, validated_data):
-#         user = Customer.objects.create_user(
-#             #username=validated_data['username'],
-#             email=validated_data['email'],
-#             password=validated_data['password'],
-#             first_name=validated_data['first_name'],
-#             last_name=validated_data['last_name'],
-#             phone=validated_data.get('phone', ''),
-#             street=validated_data.get('street', ''),
-#             house_number=validated_data.get('house_number', ''),
-#             apartment_number=validated_data.get('apartment_number', ''),
-#             city=validated_data.get('city', ''),
-#             postal_code=validated_data.get('postal_code', ''),
-#             province=validated_data.get('province', ''),
-#         )
-#         return user
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()

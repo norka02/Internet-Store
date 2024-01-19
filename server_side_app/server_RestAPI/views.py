@@ -16,7 +16,7 @@ class NewsletterSubscriptionView(APIView):
         serializer = SubscriberSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.validated_data['email']
-            # Sprawdź, czy adres email już istnieje
+
             if Subscriber.objects.filter(email=email).exists():
                 return Response({"error": "Ten adres email jest już zapisany do newslettera."}, status=status.HTTP_400_BAD_REQUEST)
             
@@ -79,17 +79,9 @@ class CreateOrderView(APIView):
             for item_data in items_data:
                 product_variant = ProductVariant.objects.get(
                     id=item_data['productVariantId']
-                    # product_id=item_data['productId'],
-                    # size=item_data['size'],
-                    # color=item_data['color']
+                
                 )
-                # order_detail = OrderDetail(
-                #     order=order,
-                #     product_variant=product_variant,
-                #     quantity=item_data['quantity'],
-                #     unit_price=product_variant.product.price
-                # )
-                # order_detail.save()
+               
                 order_detail = OrderDetail(
                     order=order,
                     product_variant=product_variant,
@@ -119,66 +111,11 @@ class RegisterCustomer(APIView):
                 first_name=serializer.validated_data['first_name'],
                 last_name=serializer.validated_data['last_name'],
                 password=make_password(serializer.validated_data['password']),
-                # phone=serializer.validated_data['phone', ''],
-                # street=serializer.validated_data['street', ''],
-                # house_number=serializer.validated_data['house_number', ''],
-                # apartament_number=serializer.validated_data['apartament_number', ''],
-                # city=serializer.validated_data['city', ''],
-                # postal_code=serializer.validated_data['postal_code', ''],
-                # province=serializer.validated_data['province', ''],
+    
             )
             return Response({'message': 'Rejestracja zakończona sukcesem'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-
-
-
-        email = request.data.get('email')
-        password = request.data.get('password')
-
-        if not email or not password:
-            return Response({'error': 'Both email and password are required'}, status=status.HTTP_400_BAD_REQUEST)
-
-        if Customer.objects.filter(email=email).exists():
-            return Response({'error': 'Email is already used'}, status=status.HTTP_400_BAD_REQUEST)
-
-        user = Customer.objects.create_user(email=email, password=password)
-        # Możesz także utworzyć obiekt UserProfile, jeśli potrzebujesz dodatkowych informacji o użytkowniku
-
-        return Response({'success': 'User registered successfully'}, status=status.HTTP_201_CREATED)
-    
-
-# class UserRegistrationView(generics.CreateAPIView):
-#     serializer_class = UserRegistrationSerializer
-
-#     def post(self, request, *args, **kwargs):
-#         serializer = self.get_serializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         self.perform_create(serializer)
-#         headers = self.get_success_headers(serializer.data)
-#         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-    
-
-### TO JEST DZIAŁAJĄCE
-# class LoginCustomer(APIView):
-#     def post(self, request):
-#         serializer = LoginSerializer(data=request.data)
-#         if serializer.is_valid():
-#             email = serializer.validated_data['email']
-#             password = serializer.validated_data['password']
-
-#             # Sprawdź, czy istnieje użytkownik o podanym adresie e-mail
-#             user = authenticate(request, email=email, password=password)
-
-#             if user is not None:
-#                 # Zaloguj użytkownika
-#                 login(request, user)
-#                 return Response({'message': 'Zalogowano pomyślnie'}, status=status.HTTP_200_OK)
-#             else:
-#                 return Response({'error': 'Błędny adres e-mail lub hasło'}, status=status.HTTP_401_UNAUTHORIZED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 class LoginCustomer(APIView):
     def post(self, request):
@@ -201,36 +138,6 @@ class LoginCustomer(APIView):
             else:
                 return Response({'error': 'Błędny adres email lub hasło'}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-# class LoginCustomer(APIView):
-#     def post(self, request):
-#         email = request.data.get('email')
-#         password = request.data.get('password')
-
-#         user = authenticate(request, email=email, password=password)
-
-#         if user is not None:
-#             login(request, user)
-#             return Response({'success': 'User logged in successfully'}, status=status.HTTP_200_OK)
-#         else:
-#             return Response({'error': 'Invalid email or password'}, status=status.HTTP_401_UNAUTHORIZED)
-    ##########################
-# class CustomerAccountView(APIView):
-#     def post(self, request, *args, **kwargs):
-#         serializer = CustomerAccountSerializer(data=request.data)
-#         #TODO -> weryfikacja po sesji customera, i na podstawie tych danych update info o nim
-
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
 
 
 class CustomerAccountView(UpdateAPIView):
@@ -260,25 +167,3 @@ class CustomerAccountView(UpdateAPIView):
                 {"error": f"Wystąpił błąd: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-
-# class CustomerAccountView(UpdateAPIView, CustomerAccount):
-#     def post(self, request, *args, **kwargs):   #, email_check
-#         try:
-#             #email_check = request.data.get('email_check', None)
-#             email_check = self.kwargs.get('email_check', None)
-#             serializer = CustomerAccountSerializer(data=request.data)
-#             #TODO -> weryfikacja po sesji customera, i na podstawie tych danych update info o nim
-#             customer = CustomerAccount.objects.get(email=email_check)
-
-#             if serializer.is_valid():
-#                 serializer.save()
-#                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-#             else:
-#                 print(serializer.errors)
-#                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#         except CustomerAccount.DoesNotExist:
-#             return Response({"error": "Klient o podanym identyfikatorze nie istnieje. " + email_check}, status=status.HTTP_404_NOT_FOUND)
-#         except Exception as e:
-#             return Response({"error": f"Wystąpił błąd: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

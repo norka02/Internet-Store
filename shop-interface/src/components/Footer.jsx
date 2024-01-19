@@ -42,7 +42,7 @@ function Footer({ formRef }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <button type="submit" className="">
+              <button type="submit" className="newsletter-button">
                 Subscribe
               </button>
             </form>

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'server_RestAPI',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -123,13 +125,27 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Ścieżka do przesyłu plików
+MEDIA_ROOT = os.path.join(BASE_DIR, 'meida')
+
+# Ścieżka do serwowania plików
+MEDIA_URL = '/media/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# AUTH_USER_MODEL = 'server_RestAPI.CustomerAccount'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = '5b14b8fe7ac6ed'
+EMAIL_HOST_PASSWORD = '3e38a89c937b05'
+EMAIL_PORT = '2525'
+EMAIL_USE_TLS = True

@@ -7,10 +7,10 @@
 }
 
 body {
+  color: #000;
   height: 100vh;
-  background-color: #000;
-  /* background-image: url('/back3.png'); */
   background-color: gainsboro;
   background-size: cover;
   background-position: center;
+  background: linear-gradient(to right, white 70%, #d18c47 30%);
 }

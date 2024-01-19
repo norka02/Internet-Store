@@ -1,17 +1,17 @@
 import React from "react";
-import './Products.css';
-import Cards from '../Cards';
-
+import "./Products.css";
+import Cards from "../Cards";
+import Footer from "../Footer";
 
 function Products() {
-    return (
-        <>
-            <div className="">
-                <h1>Products</h1>
-                <Cards />
-            </div>
-        </>
-    );
+  return (
+    <>
+      <div className="">
+        <Cards />
+      </div>
+      <Footer />
+    </>
+  );
 }
 
 export default Products;

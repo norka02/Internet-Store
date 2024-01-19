@@ -14,6 +14,10 @@ import PurchaseForm from "./components/PurchaseForm";
 import Checkout from "./components/Checkout";
 import ProductDetail from "./components/sites/ProductDetail";
 import { ShopContextProvider } from "./components/sites/context/shop-context";
+import RegisterForm from "./components/RegisterForm";
+import LoginForm from "./components/LoginForm";
+import UserProfile from "./components/sites/UserProfile";
+import CustAccForm from "./components/CustAccForm";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -35,6 +39,10 @@ function App() {
             <Route path="/basket" Component={Basket} />
             <Route path="/purchase-form" Component={PurchaseForm} />
             <Route path="/checkout" Component={Checkout} />
+            <Route path="/register-form" Component={RegisterForm} />
+            <Route path="/sign-in" Component={LoginForm} />
+            <Route path="/user-profile" Component={UserProfile} />
+            <Route path="/update-customer-info" Component={CustAccForm} />
           </Routes>
         </Router>
       </ShopContextProvider>

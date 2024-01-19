@@ -2,3 +2,37 @@
     text-align: center;
     padding: 100px;
 }
+
+.store-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .store-title {
+    color: #333;
+    font-size: 2em;
+    margin-bottom: 15px;
+  }
+  
+  .store-text {
+    color: #666;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+  
+  .store-button {
+    background-color: #ff6600;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .store-button:hover {
+    background-color: #e65300;
+  }
+  

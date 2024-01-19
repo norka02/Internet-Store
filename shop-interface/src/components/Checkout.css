@@ -1,0 +1,73 @@
+/* styles/Checkout.css */
+
+/* Container styling */
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Card styling */
+.card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+/* Image styling */
+.card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* Card details styling */
+.card-details {
+  margin-top: 15px;
+}
+
+.card-details h1 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.price {
+  color: #007bff;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+/* PayPal buttons styling */
+.paypal-buttons {
+  margin-top: 20px;
+}
+
+
+/* 
+.checkout-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+  }
+  
+  .checkout-container-2 {
+    margin-top: 20px;
+  }
+  
+  /* Styling for PayPal button */
+  /* .checkout-button {
+    background-color: #003087;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .checkout-button:hover {
+    background-color: #001e5a;
+  } */ 

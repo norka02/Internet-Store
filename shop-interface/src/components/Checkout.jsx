@@ -1,41 +1,18 @@
-import React, { useRef, useEffect } from "react";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { Toaster } from "react-hot-toast";
+import Payment from './sites/Payment'
+import './Checkout.css'; 
 
-export default function Checkout() {
-  const paypal = useRef();
-
-  useEffect(() => {
-    window.paypal
-      .Buttons({
-        createOrder: (data, actions, err) => {
-          return actions.order.create({
-            intent: "CAPTURE",
-            purchase_units: [
-              {
-                //TODO: connect with database?
-                description: "Hoodie",
-                amount: {
-                  currency_code: "PLN",
-                  value: 333.0,
-                },
-              },
-            ],
-          });
-        },
-        onApprove: async (data, actions) => {   
-            // TODO: sending mail providing info that transaction gone succesfully
-          const order = await actions.order.capture();
-          console.log(order);
-        },
-        onError: (err) => {
-          console.log(err);
-        },
-      })
-      .render(paypal.current);
-  }, []);
-
+const Checkout = () => {
   return (
-    <div>
-      <div ref={paypal}></div>
-    </div>
+    <PayPalScriptProvider> 
+      {/* options={{ "client-id": process.env.REACT_APP_PAYPAL_CLIENT_ID }} */}
+      <div className="container">
+        <Toaster position="top-center" />
+        <Payment />
+      </div>
+    </PayPalScriptProvider>
   );
-}
+};
+
+export default Checkout;

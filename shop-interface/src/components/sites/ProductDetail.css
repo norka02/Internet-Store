@@ -1,22 +1,23 @@
 .item-wrap {
   display: flex;
-  flex: 1;
-  flex-direction: row;
+  flex-wrap: wrap; /* Allow items to wrap */
   justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 .wrap-container {
-  justify-content: center;
-  width: 70%;
+  width: 100%;
+  max-width: 70%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  border: 1px solid #ddd;
-  padding: 2rem;
-  margin: 2rem; /* Zmniejszony margines dla mniejszych ekranów */
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 1.5rem;
+  margin: 1rem auto;
   border-radius: 8px;
-  background-color: #e2d560;
-  min-height: 28rem;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .main-content {
@@ -34,7 +35,8 @@
 
 .product-name {
   color: #333;
-  margin-bottom: 10px;
+  margin: 2rem;
+  font-size: 7rem;
 }
 
 .slider {
@@ -61,50 +63,77 @@
 
 .product-price {
   color: #666;
-  margin-bottom: 10px;
+  margin-bottom: 3rem;
+  text-align: center;
+  font-size: 2rem;
 }
 
-.product-color {
-  color: #666;
-  margin-bottom: 10px;
+.product-colors {
+  color: #555;
+  font-size: 2rem;
+  margin: 2rem;
+  text-align: left;
 }
 
 .product-description {
-  color: #444;
-  margin-bottom: 10px;
+  color: #333; /* Darker for emphasis */
+  font-size: 2rem; /* Increased font size */
+  margin-bottom: 15px; /* Consistent margin with other elements */
 }
 
-.product-sizes span {
-  padding: 3px 6px;
-  border: 1px solid #ddd;
-  margin-right: 5px;
-  border-radius: 4px;
+.product-sizes {
+  padding: 2rem; /* Increased padding for better touch targets */
+  border: 1px solid #aaa; /* Softer border color */
+  margin: 2rem;
+  border-radius: 6px; /* Consistent border-radius */
+  font-size: 2rem;
+  cursor: pointer; /* Cursor pointer for interactive elements */
 }
 
 .product-wrapper {
   display: flex;
-  flex: 2;
+  flex: 1; /* Unchanged */
 }
 
 .add-to-cart-button {
-  background-color: transparent;
-  border: 2px solid rgb(19, 19, 19);
-  min-width: 4rem;
-  padding: 0.6rem 0.4rem;
-  border-radius: 15px;
-  max-width: 7rem;
+  background-color: #f8f8f8; /* Light background for contrast */
+  border: 2px solid #333; /* Darker border for emphasis */
+  min-width: 5rem; /* Slightly wider button */
+  padding: 0.8rem 1rem; /* Increased padding for better touch target */
+  border-radius: 20px; /* Rounded corners for modern look */
+  font-size: 1.1rem; /* Larger font size for readability */
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
 }
 
 .add-to-cart-button:hover {
-  background-color: rgb(19, 19, 19);
-  color: white;
-  cursor: pointer;
+  background-color: #333; /* Dark background on hover */
+  color: white; /* White text for contrast */
+  cursor: pointer; /* Ensure cursor indicates clickable button */
+}
+
+.size-button {
+  background-color: #f8f8f8; /* Light background for contrast */
+  border: 3px solid #333; /* Darker border for emphasis */
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  min-width: 5rem; /* Slightly wider button */
+  padding: 0.8rem 1rem; /* Increased padding for better touch target */
+  border-radius: 20px; /* Rounded corners for modern look */
+  font-size: 1.1rem; /* Larger font size for readability */
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+}
+
+.size-button:hover {
+  background-color: #333; /* Dark background on hover */
+  color: white; /* White text for contrast */
+  cursor: pointer; /* Ensure cursor indicates clickable button */
 }
 
 /* Zapytania medialne dla tabletów */
 @media screen and (max-width: 768px) {
   .wrap-container {
-    margin: 2rem 1rem;
+    max-width: 95%; /* Wider for tablet devices */
   }
 
   .main-content {
@@ -113,36 +142,26 @@
 
   .product-wrapper,
   .item-info-wrapper {
-    flex: 1; /* Oba elementy zajmują teraz pełną szerokość */
+    width: 100%;
   }
 
+  /* Adjust slider size */
   .slider {
-    width: 100%; /* Szerokość slidera dopasowana do kontenera */
-    height: auto; /* Wysokość auto, aby zachować proporcje */
+    width: 100%;
+    height: auto;
   }
 }
 
-/* Zapytania medialne dla urządzeń mobilnych */
 @media screen and (max-width: 480px) {
   .wrap-container {
-    margin: 1rem;
-    padding: 1rem;
+    padding: 1rem; /* Reduced padding */
+    margin: 0.5rem; /* Reduced margin */
   }
 
   .product-header,
   .product-wrapper,
   .item-info-wrapper {
-    flex-direction: column;
     align-items: center;
     text-align: center;
-  }
-
-  .slider {
-    width: 100%;
-    height: auto;
-  }
-
-  .add-to-cart-button {
-    min-width: 80px; /* Mniejszy przycisk dla urządzeń mobilnych */
   }
 }

@@ -86,7 +86,24 @@ body {
   padding-right: 0.3rem;
 }
 
-.item-detail-value {
+.remove-from-cart-button {
+  background-color: transparent;
+  border: 3px solid rgb(19, 19, 19);
+  min-width: 3rem;
+  padding: 0.5rem 2rem;
+  font-size: large;
+  font-weight: 700;
+  border-radius: 15px;
+  max-width: 10rem;
+  background-color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.remove-from-cart-button:hover {
+  background-color: rgb(19, 19, 19);
+  color: white;
+  cursor: pointer;
+  transform: scale(1.1);
 }
 
 .select-number-module {
@@ -94,24 +111,26 @@ body {
 }
 
 #select-amount {
-  width: 100px;
-  height: 40px;
+  width: 3rem;
+  height: 3rem;
   border: 1px solid #cccccc;
   border-radius: 1rem;
   appearance: none;
-  padding: 10px;
+  padding: 0.3rem;
+  margin-right: 2rem;
   background: transparent;
-  font-size: 16px;
+  font-size: 1.2rem;
   cursor: pointer;
+  text-align: center;
 }
 
 .select-container {
   position: relative;
   display: inline-block;
+  display: flex;
 }
 
 .select-container:after {
-  content: "\21D3";
   position: absolute;
   top: 50%;
   right: 10px;
@@ -133,12 +152,6 @@ body {
   border-bottom: #cccccc;
   border-bottom-style: solid;
   text-align: center;
-}
-
-.summary-header {
-}
-
-.summary-section {
 }
 
 .summary-section-list {
@@ -187,19 +200,22 @@ body {
 .finalize-button {
   display: flex;
   background-color: transparent;
-  border: 2px solid rgb(19, 19, 19);
+  border: 3px solid rgb(19, 19, 19);
   min-width: 100px;
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 5px;
   padding-bottom: 5px;
   border-radius: 15px;
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
 }
 
 .finalize-button:hover {
   background-color: rgb(19, 19, 19);
   color: white;
   cursor: pointer;
+  transform: scale(1.1);
 }
 
 @media (max-width: 768px) {

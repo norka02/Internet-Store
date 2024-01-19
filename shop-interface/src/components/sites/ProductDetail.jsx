@@ -46,7 +46,11 @@ function ProductDetail() {
   };
 
   const sizes = productVariant.product.sizes.map((size) => (
-    <button key={size.id} onClick={() => handleSizeSelection(size.id)}>
+    <button
+      key={size.id}
+      className="size-button"
+      onClick={() => handleSizeSelection(size.id)}
+    >
       {size.name}
     </button>
   ));
@@ -87,18 +91,15 @@ function ProductDetail() {
                 {selectedSizeId && (
                   <button
                     className="add-to-cart-button"
-                    onClick={() => addToCart(productVariant.id, selectedSizeId)}
+                    onClick={() => {
+                      addToCart(productVariant.id, selectedSizeId);
+                      alert("Dodano produkt do koszyka");
+                    }}
                   >
                     Add to Cart
                   </button>
                 )}
               </div>
-              {cartItems.map((item, index) => (
-                <div key={index}>
-                  Product Variant ID: {item.productVariantId}, Size ID:{" "}
-                  {item.sizeId}, Quantity: {item.quantity}
-                </div>
-              ))}
             </div>
           </div>
         </div>

@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { ShopContext } from "./sites/context/shop-context";
 import "./PurchaseForm.css";
+import Checkout from "./Checkout";
 
 const PurchaseForm = () => {
   const [customerData, setCustomerData, checkout] = useState({
@@ -35,15 +35,14 @@ const PurchaseForm = () => {
     axios
       .post("http://localhost:8000/api/orders/", orderData)
       .then((response) => {
-        console.log(response.data);
-        checkout();
+        alert("Zamówienie wysłane porpawnie");
+        checkout;
       })
       .catch((error) => {
         console.error("Error sending order", error);
-        // Obsługa błędów
+        alert("Wystąpił błąd podczas wystłania zamówienia");
       });
   };
-
 
   return (
     <form onSubmit={handleSubmit} className="purchase-form">
@@ -62,7 +61,7 @@ const PurchaseForm = () => {
         <label className="purchase-form-label">
           Nazwisko:
           <input
-          className="purchase-form-input"
+            className="purchase-form-input"
             type="text"
             name="lastName"
             value={customerData.lastName}
@@ -157,9 +156,10 @@ const PurchaseForm = () => {
       <div className="purchase-form-container">
         <p>Całkowita cena zamówienia: {getTotalCartAmount()} PLN</p>
       </div>
-      <Link to="/checkout">
-        <button className="purchase-form-button" type="submit">Złóż zamówienie</button>
-      </Link>
+      <button className="purchase-form-button" type="submit">
+        Złóż zamówienie
+      </button>
+      <Checkout />
     </form>
   );
 };

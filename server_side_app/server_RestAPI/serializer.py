@@ -70,6 +70,16 @@ class OrderSerializer(serializers.Serializer):
 
         return order
 
+class OrderDetailSerializer(serializers.ModelSerializer):
+    product_variant_id = serializers.IntegerField() 
+
+    class Meta:
+        model = OrderDetail
+        fields = ['product_variant_id', 'quantity']
+
+    def create(self, validated_data):
+        product_variant = ProductVariant.objects.get(id=validated_data['product_variant_id'])
+        return OrderDetail.objects.create(product_variant=product_variant, **validated_data)
 
 
 class RegistrationSerializer(serializers.ModelSerializer):

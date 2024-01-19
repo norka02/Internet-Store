@@ -4,11 +4,12 @@
 *.pyc
 __pycache__
 db.sqlite3
-
+media
 
 # Backup files # 
 *.bak 
-server_side_app/meida/product_images/*
+media/product_images/*
+migrations/*
 # If you are using PyCharm # 
 # User-specific stuff
 .idea/**/workspace.xml

@@ -11,4 +11,5 @@ urlpatterns = [
     path('login/', views.LoginCustomer.as_view(), name='login_customer'),
     path('customerInfoUpdate/<str:email_check>/', views.CustomerAccountView.as_view(), name='customerInfoUpdate'),    
     #<str:email_check>/
+    path('newsletter/', views.NewsletterSubscriptionView.as_view(), name='subscribe-newsletter'),
 ] 

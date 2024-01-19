@@ -1,5 +1,25 @@
 from django.contrib import admin
-from .models import Category, SizeVariant,Product, ProductVariant, Customer, Order, OrderDetail, ProductImage, Size, CustomerAccount
+from .models import Category, SizeVariant,Product, ProductVariant, Customer, Order, OrderDetail, ProductImage, Size, CustomerAccount, Subscriber, EmailTemplate
+
+from ckeditor.fields import RichTextField
+
+@admin.register(Subscriber)
+class SubscriberAdmin(admin.ModelAdmin):
+    list_display = ('email',)  
+
+
+@admin.register(EmailTemplate)
+class EmailTemplateAdmin(admin.ModelAdmin):
+    list_display = ['subject', 'message']
+    actions = ['send_emails']
+    list_filter = ('recipients', 'send_to_all')
+    filter_horizontal = ('recipients',)
+
+    def send_emails(self, request, queryset):
+        for email_template in queryset:
+            email_template.send_emails()
+        self.message_user(request, "E-mails has been sent")
+    send_emails.short_description = "Send e-mails to subscribers"
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -21,7 +41,6 @@ class SizeVariantInline(admin.TabularInline):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'price')
     list_filter = ('category',)
-    filter_horizontal = ('sizes',) 
     
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
@@ -72,3 +91,5 @@ class CustomerAccountAAdmin(admin.ModelAdmin):
                     'street', 'house_number', 'apartment_number', 'city', 
                     'postal_code', 'province')
     list_filter = ('first_name', 'last_name', 'email')
+
+

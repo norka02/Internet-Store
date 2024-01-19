@@ -11,7 +11,20 @@ from django.contrib.auth.hashers import make_password, check_password
 from rest_framework.generics import UpdateAPIView
 
 
-
+class NewsletterSubscriptionView(APIView):
+    def post(self, request):
+        serializer = SubscriberSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            # Sprawdź, czy adres email już istnieje
+            if Subscriber.objects.filter(email=email).exists():
+                return Response({"error": "Ten adres email jest już zapisany do newslettera."}, status=status.HTTP_400_BAD_REQUEST)
+            
+            # Zapisz nowego subskrybenta
+            Subscriber.objects.create(email=email)
+            return Response({"message": "Zapisano do newslettera!"}, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AllProductsView(APIView):
@@ -188,6 +201,8 @@ class LoginCustomer(APIView):
             else:
                 return Response({'error': 'Błędny adres email lub hasło'}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 # class LoginCustomer(APIView):

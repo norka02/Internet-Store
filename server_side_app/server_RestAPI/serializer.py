@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, SizeVariant, Product, ProductVariant, Customer, Order, OrderDetail, CustomerAccount, ProductImage
+from .models import Category, SizeVariant, Product, ProductVariant, Customer, Order, OrderDetail, CustomerAccount, ProductImage, Subscriber
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -71,10 +71,18 @@ class OrderSerializer(serializers.Serializer):
         return order
 
 
+
 class RegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerAccount
         fields = ['first_name', 'last_name', 'email', 'password']
+        
+
+class SubscriberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscriber
+        fields = ['email']
+
 
 # class RegistrationSerializer(serializers.Serializer):
 #     first_name = serializers.CharField()

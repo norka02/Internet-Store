@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, AbstractUser
+from ckeditor.fields import RichTextField
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -100,6 +103,36 @@ class CustomerAccount(models.Model):
         return f"{self.first_name} {self.last_name}"
     
 
+class Subscriber(models.Model):
+    email = models.EmailField(unique=True)
+    
+    def __str__(self) -> str:
+        return self.email
+    
+
+class EmailTemplate(models.Model):
+    subject = models.CharField(max_length=255)
+    message = RichTextField()
+    recipients = models.ManyToManyField(Subscriber, blank=True)
+    send_to_all = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return self.subject
+    
+    def send_emails(self):
+        if self.send_to_all:
+            emails = [subscriber.email for subscriber in Subscriber.objects.all()]
+        else:
+            emails = [subscriber.email for subscriber in self.recipients.all()]
+
+        send_mail(
+            self.subject,
+            '', 
+            settings.EMAIL_HOST_USER,
+            emails,
+            html_message=self.message,  
+            fail_silently=False,
+        )
 
 # class CustomerAccountManager(BaseUserManager):
 #     def create_user(self, email, password=None, **extra_fields):

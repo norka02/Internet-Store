@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "./Button";
+import axios from "axios";
 import "./Footer.css";
 
 function Footer({ formRef }) {
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/newsletter/",
+        { email }
+      );
+      alert("Zapisano do newslettera!");
+      setEmail("");
+    } catch (error) {
+      console.error("Wystąpił błąd:", error);
+      alert("Błąd podczas zapisu do newslettera.");
+    }
+  };
+
   return (
     <>
       <div className="footer-container">
@@ -16,14 +33,18 @@ function Footer({ formRef }) {
             You can unsubscribe any time.
           </p>
           <div className="input-area">
-            <form>
+            <form onSubmit={handleSubmit}>
               <input
                 type="email"
                 name="email"
                 placeholder="Your email"
                 className="footer-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <Button className="btn--outline">Subscribe</Button>
+              <button type="submit" className="">
+                Subscribe
+              </button>
             </form>
           </div>
         </section>
